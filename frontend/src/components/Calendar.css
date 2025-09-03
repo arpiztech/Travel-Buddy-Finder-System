@@ -1,0 +1,27 @@
+/* frontend/src/components/Calendar.css */
+
+.calendar-container {
+  width: 100%;
+  max-width: 400px;
+  margin: 20px auto;
+  background: #fff;
+  border: 1px solid #ddd;
+  border-radius: 12px;
+  padding: 15px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.react-calendar {
+  width: 100%;
+  border: none;
+}
+
+.react-calendar__tile {
+  padding: 10px 5px;
+}
+
+.react-calendar__tile--active {
+  background: #007bff;
+  color: white;
+  border-radius: 8px;
+}
