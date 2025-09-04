@@ -3,6 +3,7 @@ import { useState } from "react";
 import Dashboard from "./pages/Dashboard";
 import Login from "./pages/Login";
 import Signup from "./pages/Signup";
+import Profile from "./pages/Profile"; 
 
 function App() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -40,6 +41,7 @@ function App() {
           isAuthenticated ? <Dashboard /> : <Navigate to="/" />
         }
       />
+       <Route path="/profile" element={<Profile />} /> 
     </Routes>
   );
 }
