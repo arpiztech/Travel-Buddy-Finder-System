@@ -4,6 +4,8 @@ import Dashboard from "./pages/Dashboard";
 import Login from "./pages/Login";
 import Signup from "./pages/Signup";
 import Profile from "./pages/Profile"; 
+import Trip from "./pages/Trip";
+import ViewTrips from "./pages/ViewTrip";
 
 function App() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -42,6 +44,8 @@ function App() {
         }
       />
        <Route path="/profile" element={<Profile />} /> 
+       <Route path='/trip' element={<Trip/>}/>
+       <Route path="/view-trip" element={<ViewTrip />} />
     </Routes>
   );
 }
