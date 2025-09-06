@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { Form, Button, Card } from "react-bootstrap";
+import ViewTrip from "./ViewTrip"; // ✅ import your existing ViewTrip
 
 const MyTrips = () => {
   const [activeTab, setActiveTab] = useState("create"); // "create" or "view"
@@ -41,7 +42,7 @@ const MyTrips = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    setTrips([...trips, trip]);
+    setTrips([...trips, trip]); // save trip
     setTrip({
       destination: "",
       startDate: "",
@@ -70,7 +71,7 @@ const MyTrips = () => {
           variant={activeTab === "view" ? "success" : "outline-success"}
           onClick={() => setActiveTab("view")}
         >
-          View Trips
+          View Trip
         </Button>
       </div>
 
@@ -200,30 +201,7 @@ const MyTrips = () => {
       )}
 
       {/* VIEW TRIPS */}
-      {activeTab === "view" && (
-        <div className="d-flex flex-wrap justify-content-center gap-4">
-          {trips.length === 0 ? (
-            <p>No trips created yet.</p>
-          ) : (
-            trips.map((t, i) => (
-              <Card key={i} style={{ width: "18rem", boxShadow: "0 4px 10px rgba(0,0,0,0.2)" }}>
-                {t.image && <Card.Img variant="top" src={t.image} />}
-                <Card.Body>
-                  <Card.Title>{t.destination}</Card.Title>
-                  <Card.Text>
-                    <b>Dates:</b> {t.startDate} to {t.endDate} <br />
-                    <b>Budget:</b> ${t.budget} <br />
-                    <b>Mode:</b> {t.travelMode} <br />
-                    <b>Stay:</b> {t.accommodation} <br />
-                    <b>Activities:</b> {t.activities.join(", ")} <br />
-                    <b>Notes:</b> {t.description}
-                  </Card.Text>
-                </Card.Body>
-              </Card>
-            ))
-          )}
-        </div>
-      )}
+      {activeTab === "view" && <ViewTrip />} {/* ✅ reuse your ViewTrip component */}
     </div>
   );
 };

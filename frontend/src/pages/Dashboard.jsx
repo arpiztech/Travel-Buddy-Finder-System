@@ -1,5 +1,6 @@
 import React from "react";
 import { Container, Row, Col, Card, Button, Nav } from "react-bootstrap";
+import { Link } from "react-router-dom";  // ✅ Import Link
 
 const Dashboard = () => {
   return (
@@ -11,13 +12,24 @@ const Dashboard = () => {
       >
         <h3 className="mb-4 fw-bold">Travel Buddy</h3>
         <Nav className="flex-column gap-2">
-          <Nav.Link className="text-white fw-semibold">🏠 Home</Nav.Link>
-         
-          <Nav.Link as="a" href="/profile" className="text-white fw-semibold">
-  🧑 My Profile
-</Nav.Link>
+          <Nav.Link as={Link} to="/dashboard" className="text-white fw-semibold">
+            🏠 Home
+          </Nav.Link>
 
-          <Nav.Link className="text-white fw-semibold">✈️ My Trips</Nav.Link>
+          {/* ✅ Changed to React Router navigation */}
+          <Nav.Link as={Link} to="/profile" className="text-white fw-semibold">
+            🧑 My Profile
+          </Nav.Link>
+
+          <Nav.Link as={Link} to="/trip" className="text-white fw-semibold">
+            ✈️ My Trips
+          </Nav.Link>
+          <Nav.Link as={NavLink} to="/trip" className="text-white fw-semibold">
+    ✈️ Create Trip
+  </Nav.Link>
+  <Nav.Link as={NavLink} to="/viewtrip" className="text-white fw-semibold">
+    📌 View Trip
+  </Nav.Link>
           <Nav.Link className="text-white fw-semibold">🤝 Buddy Requests</Nav.Link>
           <Nav.Link className="text-white fw-semibold">💬 Messages</Nav.Link>
           <Nav.Link className="text-white fw-semibold">🔔 Notifications</Nav.Link>

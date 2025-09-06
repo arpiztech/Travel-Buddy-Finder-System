@@ -7,6 +7,7 @@ import Profile from "./pages/Profile";
 import Trip from "./pages/Trip";
 import ViewTrips from "./pages/ViewTrip";
 
+
 function App() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
 
@@ -45,7 +46,8 @@ function App() {
       />
        <Route path="/profile" element={<Profile />} /> 
        <Route path='/trip' element={<Trip/>}/>
-       <Route path="/view-trip" element={<ViewTrip />} />
+      <Route path="/viewtrip" element={<Trip />} />
+
     </Routes>
   );
 }
