@@ -4,9 +4,8 @@ import Dashboard from "./pages/Dashboard";
 import Login from "./pages/Login";
 import Signup from "./pages/Signup";
 import Profile from "./pages/Profile"; 
-import Trip from "./pages/Trip";
-import ViewTrips from "./pages/ViewTrip";
-
+import MyTrip from "./pages/MyTrip";
+import ViewTrip from "./pages/ViewTrip"; // ✅ make sure import name matches file
 
 function App() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -40,14 +39,14 @@ function App() {
       {/* Dashboard */}
       <Route
         path="/dashboard"
-        element={
-          isAuthenticated ? <Dashboard /> : <Navigate to="/" />
-        }
+        element={isAuthenticated ? <Dashboard /> : <Navigate to="/" />}
       />
-       <Route path="/profile" element={<Profile />} /> 
-       <Route path='/trip' element={<Trip/>}/>
-      <Route path="/viewtrip" element={<Trip />} />
 
+      <Route path="/profile" element={<Profile />} /> 
+
+      {/* Trips */}
+      <Route path="/trip" element={<MyTrip />} />     {/* Create + View own trips */}
+      <Route path="/viewtrip" element={<ViewTrip />} /> {/* Predefined trips */}
     </Routes>
   );
 }

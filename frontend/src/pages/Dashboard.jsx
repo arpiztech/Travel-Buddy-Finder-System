@@ -1,6 +1,8 @@
 import React from "react";
 import { Container, Row, Col, Card, Button, Nav } from "react-bootstrap";
-import { Link } from "react-router-dom";  // ✅ Import Link
+import { Link ,NavLink} from "react-router-dom";  // ✅ Import Link
+
+
 
 const Dashboard = () => {
   return (
@@ -24,7 +26,7 @@ const Dashboard = () => {
           <Nav.Link as={Link} to="/trip" className="text-white fw-semibold">
             ✈️ My Trips
           </Nav.Link>
-          <Nav.Link as={NavLink} to="/trip" className="text-white fw-semibold">
+          <Nav.Link as={Link} to="/trip" className="text-white fw-semibold">
     ✈️ Create Trip
   </Nav.Link>
   <Nav.Link as={NavLink} to="/viewtrip" className="text-white fw-semibold">

@@ -1,9 +1,18 @@
 import React, { useState } from "react";
-import { Form, Button, Card } from "react-bootstrap";
-import ViewTrip from "./ViewTrip"; // ✅ import your existing ViewTrip
+import { Form, Button, Card, Modal, Badge } from "react-bootstrap";
+import {
+  FaPlane,
+  FaTrain,
+  FaCar,
+  FaBus,
+  FaHotel,
+  FaHome,
+  FaCampground,
+  FaBed,
+} from "react-icons/fa";
 
-const MyTrips = () => {
-  const [activeTab, setActiveTab] = useState("create"); // "create" or "view"
+const MyTrip = () => {
+  const [activeTab, setActiveTab] = useState("create"); // create or view
   const [trips, setTrips] = useState([]);
   const [trip, setTrip] = useState({
     destination: "",
@@ -17,7 +26,30 @@ const MyTrips = () => {
     image: null,
   });
 
-  const activitiesOptions = ["Adventure", "Culture", "Food", "Shopping", "Photography", "Nature"];
+  const [selectedTrip, setSelectedTrip] = useState(null); // for modal
+
+  const activitiesOptions = [
+    "Adventure",
+    "Culture",
+    "Food",
+    "Shopping",
+    "Photography",
+    "Nature",
+  ];
+
+  const travelIcons = {
+    Flight: <FaPlane className="text-primary" />,
+    Train: <FaTrain className="text-success" />,
+    Car: <FaCar className="text-warning" />,
+    Bus: <FaBus className="text-danger" />,
+  };
+
+  const accommodationIcons = {
+    Hotel: <FaHotel className="text-primary" />,
+    Hostel: <FaBed className="text-success" />,
+    Airbnb: <FaHome className="text-warning" />,
+    Camping: <FaCampground className="text-danger" />,
+  };
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -54,7 +86,7 @@ const MyTrips = () => {
       description: "",
       image: null,
     });
-    setActiveTab("view"); // Switch to view after creating
+    setActiveTab("view"); // switch to view trips
   };
 
   return (
@@ -77,10 +109,15 @@ const MyTrips = () => {
 
       {/* CREATE TRIP FORM */}
       {activeTab === "create" && (
-        <Card style={{ width: "60%", padding: "20px", boxShadow: "0 4px 10px rgba(0,0,0,0.2)" }}>
+        <Card
+          style={{
+            width: "60%",
+            padding: "20px",
+            boxShadow: "0 4px 10px rgba(0,0,0,0.2)",
+          }}
+        >
           <h2 className="text-center mb-4">✈️ Create a Trip</h2>
           <Form onSubmit={handleSubmit}>
-            {/* Destination */}
             <Form.Group className="mb-3">
               <Form.Label>Destination (City/Country)</Form.Label>
               <Form.Control
@@ -93,7 +130,6 @@ const MyTrips = () => {
               />
             </Form.Group>
 
-            {/* Travel Dates */}
             <Form.Group className="mb-3 d-flex gap-3">
               <div className="flex-fill">
                 <Form.Label>Start Date</Form.Label>
@@ -117,7 +153,6 @@ const MyTrips = () => {
               </div>
             </Form.Group>
 
-            {/* Budget */}
             <Form.Group className="mb-3">
               <Form.Label>Budget Range ($)</Form.Label>
               <Form.Control
@@ -130,10 +165,14 @@ const MyTrips = () => {
               />
             </Form.Group>
 
-            {/* Travel Mode */}
             <Form.Group className="mb-3">
               <Form.Label>Travel Mode</Form.Label>
-              <Form.Select name="travelMode" value={trip.travelMode} onChange={handleChange} required>
+              <Form.Select
+                name="travelMode"
+                value={trip.travelMode}
+                onChange={handleChange}
+                required
+              >
                 <option value="">Select mode</option>
                 <option>Flight</option>
                 <option>Train</option>
@@ -142,10 +181,14 @@ const MyTrips = () => {
               </Form.Select>
             </Form.Group>
 
-            {/* Accommodation */}
             <Form.Group className="mb-3">
               <Form.Label>Accommodation</Form.Label>
-              <Form.Select name="accommodation" value={trip.accommodation} onChange={handleChange} required>
+              <Form.Select
+                name="accommodation"
+                value={trip.accommodation}
+                onChange={handleChange}
+                required
+              >
                 <option value="">Select type</option>
                 <option>Hotel</option>
                 <option>Hostel</option>
@@ -154,7 +197,6 @@ const MyTrips = () => {
               </Form.Select>
             </Form.Group>
 
-            {/* Activities */}
             <Form.Group className="mb-3">
               <Form.Label>Activities / Interests</Form.Label>
               <div className="d-flex flex-wrap gap-3">
@@ -171,7 +213,6 @@ const MyTrips = () => {
               </div>
             </Form.Group>
 
-            {/* Description */}
             <Form.Group className="mb-3">
               <Form.Label>Description / Notes</Form.Label>
               <Form.Control
@@ -184,13 +225,15 @@ const MyTrips = () => {
               />
             </Form.Group>
 
-            {/* Image Upload */}
             <Form.Group className="mb-3">
               <Form.Label>Upload Trip Image</Form.Label>
-              <Form.Control type="file" accept="image/*" onChange={handleFileChange} />
+              <Form.Control
+                type="file"
+                accept="image/*"
+                onChange={handleFileChange}
+              />
             </Form.Group>
 
-            {/* Submit */}
             <div className="text-center">
               <Button variant="primary" type="submit" className="px-4">
                 Save Trip
@@ -201,9 +244,103 @@ const MyTrips = () => {
       )}
 
       {/* VIEW TRIPS */}
-      {activeTab === "view" && <ViewTrip />} {/* ✅ reuse your ViewTrip component */}
+      {activeTab === "view" && (
+        <div className="d-flex flex-wrap justify-content-center gap-4">
+          {trips.length === 0 ? (
+            <p>No trips created yet.</p>
+          ) : (
+            trips.map((t, i) => (
+              <Card
+                key={i}
+                style={{
+                  width: "20rem",
+                  boxShadow: "0 4px 10px rgba(0,0,0,0.2)",
+                }}
+              >
+                {t.image && <Card.Img variant="top" src={t.image} />}
+                <Card.Body>
+                  <Card.Title className="d-flex justify-content-between align-items-center">
+                    {t.destination}
+                    <Badge bg="info">
+                      {t.startDate} → {t.endDate}
+                    </Badge>
+                  </Card.Title>
+                  <Card.Text>
+                    <b>Budget:</b> ${t.budget} <br />
+                    <b>Mode:</b> {travelIcons[t.travelMode]} {t.travelMode} <br />
+                    <b>Stay:</b> {accommodationIcons[t.accommodation]}{" "}
+                    {t.accommodation}
+                  </Card.Text>
+                  <div className="d-flex justify-content-between">
+                    <Button
+                      variant="outline-info"
+                      size="sm"
+                      onClick={() => setSelectedTrip(t)}
+                    >
+                      View Details
+                    </Button>
+                    <Button variant="outline-danger" size="sm">
+                      Delete
+                    </Button>
+                  </div>
+                </Card.Body>
+              </Card>
+            ))
+          )}
+        </div>
+      )}
+
+      {/* MODAL FOR VIEW DETAILS */}
+      <Modal
+        show={!!selectedTrip}
+        onHide={() => setSelectedTrip(null)}
+        centered
+      >
+        <Modal.Header closeButton>
+          <Modal.Title>{selectedTrip?.destination} Trip</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          {selectedTrip?.image && (
+            <img
+              src={selectedTrip.image}
+              alt="trip"
+              style={{
+                width: "100%",
+                borderRadius: "8px",
+                marginBottom: "36px",
+              }}
+            />
+          )}
+          <p>
+            <b>Dates:</b> {selectedTrip?.startDate} → {selectedTrip?.endDate}
+          </p>
+          <p>
+            <b>Budget:</b> ${selectedTrip?.budget}
+          </p>
+          <p>
+            <b>Travel Mode:</b> {travelIcons[selectedTrip?.travelMode]}{" "}
+            {selectedTrip?.travelMode}
+          </p>
+          <p>
+            <b>Accommodation:</b>{" "}
+            {accommodationIcons[selectedTrip?.accommodation]}{" "}
+            {selectedTrip?.accommodation}
+          </p>
+          <p>
+            <b>Activities:</b> {selectedTrip?.activities.join(", ")}
+          </p>
+          <p>
+            <b>Description:</b> {selectedTrip?.description}
+          </p>
+        </Modal.Body>
+        <Modal.Footer>
+          <Button variant="secondary" onClick={() => setSelectedTrip(null)}>
+            Close
+          </Button>
+        </Modal.Footer>
+      </Modal>
     </div>
   );
 };
 
-export default MyTrips;
+export default MyTrip;
