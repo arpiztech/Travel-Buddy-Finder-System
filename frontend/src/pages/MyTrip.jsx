@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import { Form, Button, Card, Modal, Badge } from "react-bootstrap";
+import React, { useState, useEffect } from "react";
+import { Card, Button, Modal, Badge, Form } from "react-bootstrap";
 import {
   FaPlane,
   FaTrain,
@@ -11,31 +11,34 @@ import {
   FaBed,
 } from "react-icons/fa";
 
+// Helper to check trip status based on dates
+const getTripStatus = (startDate, endDate) => {
+  const today = new Date();
+  const start = new Date(startDate);
+  const end = new Date(endDate);
+
+  if (today < start) return "Upcoming";
+  if (today >= start && today <= end) return "Ongoing";
+  if (today > end) return "Completed";
+  return "Cancelled";
+};
+
 const MyTrip = () => {
-  const [activeTab, setActiveTab] = useState("create"); // create or view
   const [trips, setTrips] = useState([]);
-  const [trip, setTrip] = useState({
-    destination: "",
-    startDate: "",
-    endDate: "",
-    budget: "",
-    travelMode: "",
-    accommodation: "",
-    activities: [],
-    description: "",
-    image: null,
-  });
+  const [selectedTrip, setSelectedTrip] = useState(null);
+  const [editIndex, setEditIndex] = useState(null);
+  const [search, setSearch] = useState("");
 
-  const [selectedTrip, setSelectedTrip] = useState(null); // for modal
+  // Load trips from localStorage on mount
+  useEffect(() => {
+    const saved = JSON.parse(localStorage.getItem("tbf_trips")) || [];
+    setTrips(saved);
+  }, []);
 
-  const activitiesOptions = [
-    "Adventure",
-    "Culture",
-    "Food",
-    "Shopping",
-    "Photography",
-    "Nature",
-  ];
+  // Save trips to localStorage when updated
+  useEffect(() => {
+    localStorage.setItem("tbf_trips", JSON.stringify(trips));
+  }, [trips]);
 
   const travelIcons = {
     Flight: <FaPlane className="text-primary" />,
@@ -51,205 +54,46 @@ const MyTrip = () => {
     Camping: <FaCampground className="text-danger" />,
   };
 
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setTrip({ ...trip, [name]: value });
+  const handleDelete = (index) => {
+    const updated = [...trips];
+    updated.splice(index, 1);
+    setTrips(updated);
   };
 
-  const handleCheckboxChange = (e) => {
-    const { value, checked } = e.target;
-    if (checked) {
-      setTrip({ ...trip, activities: [...trip.activities, value] });
-    } else {
-      setTrip({
-        ...trip,
-        activities: trip.activities.filter((act) => act !== value),
-      });
-    }
+  const handleEditSave = () => {
+    const updated = [...trips];
+    updated[editIndex] = selectedTrip;
+    setTrips(updated);
+    setEditIndex(null);
+    setSelectedTrip(null);
   };
 
-  const handleFileChange = (e) => {
-    setTrip({ ...trip, image: URL.createObjectURL(e.target.files[0]) });
-  };
-
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    setTrips([...trips, trip]); // save trip
-    setTrip({
-      destination: "",
-      startDate: "",
-      endDate: "",
-      budget: "",
-      travelMode: "",
-      accommodation: "",
-      activities: [],
-      description: "",
-      image: null,
-    });
-    setActiveTab("view"); // switch to view trips
-  };
+  // Filtered trips based on search
+  const filteredTrips = trips.filter((t) =>
+    t.destination.toLowerCase().includes(search.toLowerCase())
+  );
 
   return (
-    <div className="d-flex flex-column align-items-center mt-5">
-      {/* Row with Create + View buttons */}
-      <div className="d-flex gap-3 mb-4">
-        <Button
-          variant={activeTab === "create" ? "primary" : "outline-primary"}
-          onClick={() => setActiveTab("create")}
-        >
-          Create Trip
-        </Button>
-        <Button
-          variant={activeTab === "view" ? "success" : "outline-success"}
-          onClick={() => setActiveTab("view")}
-        >
-          View Trip
-        </Button>
-      </div>
+    <div className="d-flex flex-column align-items-center mt-5 w-100 px-3">
+      <h2 className="mb-4">📌 My Trips</h2>
 
-      {/* CREATE TRIP FORM */}
-      {activeTab === "create" && (
-        <Card
-          style={{
-            width: "60%",
-            padding: "20px",
-            boxShadow: "0 4px 10px rgba(0,0,0,0.2)",
-          }}
-        >
-          <h2 className="text-center mb-4">✈️ Create a Trip</h2>
-          <Form onSubmit={handleSubmit}>
-            <Form.Group className="mb-3">
-              <Form.Label>Destination (City/Country)</Form.Label>
-              <Form.Control
-                type="text"
-                name="destination"
-                value={trip.destination}
-                onChange={handleChange}
-                placeholder="Enter destination"
-                required
-              />
-            </Form.Group>
+      {/* Search bar */}
+      <Form className="mb-4 w-50">
+        <Form.Control
+          type="text"
+          placeholder="🔍 Search by destination..."
+          value={search}
+          onChange={(e) => setSearch(e.target.value)}
+        />
+      </Form>
 
-            <Form.Group className="mb-3 d-flex gap-3">
-              <div className="flex-fill">
-                <Form.Label>Start Date</Form.Label>
-                <Form.Control
-                  type="date"
-                  name="startDate"
-                  value={trip.startDate}
-                  onChange={handleChange}
-                  required
-                />
-              </div>
-              <div className="flex-fill">
-                <Form.Label>End Date</Form.Label>
-                <Form.Control
-                  type="date"
-                  name="endDate"
-                  value={trip.endDate}
-                  onChange={handleChange}
-                  required
-                />
-              </div>
-            </Form.Group>
-
-            <Form.Group className="mb-3">
-              <Form.Label>Budget Range ($)</Form.Label>
-              <Form.Control
-                type="number"
-                name="budget"
-                value={trip.budget}
-                onChange={handleChange}
-                placeholder="Enter budget"
-                required
-              />
-            </Form.Group>
-
-            <Form.Group className="mb-3">
-              <Form.Label>Travel Mode</Form.Label>
-              <Form.Select
-                name="travelMode"
-                value={trip.travelMode}
-                onChange={handleChange}
-                required
-              >
-                <option value="">Select mode</option>
-                <option>Flight</option>
-                <option>Train</option>
-                <option>Car</option>
-                <option>Bus</option>
-              </Form.Select>
-            </Form.Group>
-
-            <Form.Group className="mb-3">
-              <Form.Label>Accommodation</Form.Label>
-              <Form.Select
-                name="accommodation"
-                value={trip.accommodation}
-                onChange={handleChange}
-                required
-              >
-                <option value="">Select type</option>
-                <option>Hotel</option>
-                <option>Hostel</option>
-                <option>Airbnb</option>
-                <option>Camping</option>
-              </Form.Select>
-            </Form.Group>
-
-            <Form.Group className="mb-3">
-              <Form.Label>Activities / Interests</Form.Label>
-              <div className="d-flex flex-wrap gap-3">
-                {activitiesOptions.map((act) => (
-                  <Form.Check
-                    key={act}
-                    type="checkbox"
-                    label={act}
-                    value={act}
-                    checked={trip.activities.includes(act)}
-                    onChange={handleCheckboxChange}
-                  />
-                ))}
-              </div>
-            </Form.Group>
-
-            <Form.Group className="mb-3">
-              <Form.Label>Description / Notes</Form.Label>
-              <Form.Control
-                as="textarea"
-                rows={3}
-                name="description"
-                value={trip.description}
-                onChange={handleChange}
-                placeholder="Write details about your trip"
-              />
-            </Form.Group>
-
-            <Form.Group className="mb-3">
-              <Form.Label>Upload Trip Image</Form.Label>
-              <Form.Control
-                type="file"
-                accept="image/*"
-                onChange={handleFileChange}
-              />
-            </Form.Group>
-
-            <div className="text-center">
-              <Button variant="primary" type="submit" className="px-4">
-                Save Trip
-              </Button>
-            </div>
-          </Form>
-        </Card>
-      )}
-
-      {/* VIEW TRIPS */}
-      {activeTab === "view" && (
-        <div className="d-flex flex-wrap justify-content-center gap-4">
-          {trips.length === 0 ? (
-            <p>No trips created yet.</p>
-          ) : (
-            trips.map((t, i) => (
+      <div className="d-flex flex-wrap justify-content-center gap-4">
+        {filteredTrips.length === 0 ? (
+          <p>No trips found. Please create one!</p>
+        ) : (
+          filteredTrips.map((t, i) => {
+            const status = getTripStatus(t.startDate, t.endDate);
+            return (
               <Card
                 key={i}
                 style={{
@@ -261,13 +105,25 @@ const MyTrip = () => {
                 <Card.Body>
                   <Card.Title className="d-flex justify-content-between align-items-center">
                     {t.destination}
-                    <Badge bg="info">
-                      {t.startDate} → {t.endDate}
+                    <Badge
+                      bg={
+                        status === "Upcoming"
+                          ? "primary"
+                          : status === "Ongoing"
+                          ? "success"
+                          : status === "Completed"
+                          ? "secondary"
+                          : "danger"
+                      }
+                    >
+                      {status}
                     </Badge>
                   </Card.Title>
                   <Card.Text>
+                    <b>Dates:</b> {t.startDate} → {t.endDate} <br />
                     <b>Budget:</b> ${t.budget} <br />
-                    <b>Mode:</b> {travelIcons[t.travelMode]} {t.travelMode} <br />
+                    <b>Mode:</b> {travelIcons[t.travelMode]} {t.travelMode}{" "}
+                    <br />
                     <b>Stay:</b> {accommodationIcons[t.accommodation]}{" "}
                     {t.accommodation}
                   </Card.Text>
@@ -277,27 +133,47 @@ const MyTrip = () => {
                       size="sm"
                       onClick={() => setSelectedTrip(t)}
                     >
-                      View Details
+                      View
                     </Button>
-                    <Button variant="outline-danger" size="sm">
+                    <Button
+                      variant="outline-warning"
+                      size="sm"
+                      onClick={() => {
+                        setSelectedTrip(t);
+                        setEditIndex(i);
+                      }}
+                    >
+                      Edit
+                    </Button>
+                    <Button
+                      variant="outline-danger"
+                      size="sm"
+                      onClick={() => handleDelete(i)}
+                    >
                       Delete
                     </Button>
                   </div>
                 </Card.Body>
               </Card>
-            ))
-          )}
-        </div>
-      )}
+            );
+          })
+        )}
+      </div>
 
-      {/* MODAL FOR VIEW DETAILS */}
+      {/* MODAL FOR VIEW / EDIT */}
       <Modal
         show={!!selectedTrip}
-        onHide={() => setSelectedTrip(null)}
+        onHide={() => {
+          setSelectedTrip(null);
+          setEditIndex(null);
+        }}
         centered
+        size="lg"
       >
         <Modal.Header closeButton>
-          <Modal.Title>{selectedTrip?.destination} Trip</Modal.Title>
+          <Modal.Title>
+            {editIndex !== null ? "✏️ Edit Trip" : "📖 Trip Details"}
+          </Modal.Title>
         </Modal.Header>
         <Modal.Body>
           {selectedTrip?.image && (
@@ -307,36 +183,128 @@ const MyTrip = () => {
               style={{
                 width: "100%",
                 borderRadius: "8px",
-                marginBottom: "36px",
+                marginBottom: "20px",
               }}
             />
           )}
-          <p>
-            <b>Dates:</b> {selectedTrip?.startDate} → {selectedTrip?.endDate}
-          </p>
-          <p>
-            <b>Budget:</b> ${selectedTrip?.budget}
-          </p>
-          <p>
-            <b>Travel Mode:</b> {travelIcons[selectedTrip?.travelMode]}{" "}
-            {selectedTrip?.travelMode}
-          </p>
-          <p>
-            <b>Accommodation:</b>{" "}
-            {accommodationIcons[selectedTrip?.accommodation]}{" "}
-            {selectedTrip?.accommodation}
-          </p>
-          <p>
-            <b>Activities:</b> {selectedTrip?.activities.join(", ")}
-          </p>
-          <p>
-            <b>Description:</b> {selectedTrip?.description}
-          </p>
+
+          {editIndex !== null ? (
+            <>
+              <Form.Group className="mb-3">
+                <Form.Label>Destination</Form.Label>
+                <Form.Control
+                  type="text"
+                  value={selectedTrip.destination}
+                  onChange={(e) =>
+                    setSelectedTrip({
+                      ...selectedTrip,
+                      destination: e.target.value,
+                    })
+                  }
+                />
+              </Form.Group>
+
+              <Form.Group className="mb-3 d-flex gap-3">
+                <div className="flex-fill">
+                  <Form.Label>Start Date</Form.Label>
+                  <Form.Control
+                    type="date"
+                    value={selectedTrip.startDate}
+                    onChange={(e) =>
+                      setSelectedTrip({
+                        ...selectedTrip,
+                        startDate: e.target.value,
+                      })
+                    }
+                  />
+                </div>
+                <div className="flex-fill">
+                  <Form.Label>End Date</Form.Label>
+                  <Form.Control
+                    type="date"
+                    value={selectedTrip.endDate}
+                    onChange={(e) =>
+                      setSelectedTrip({
+                        ...selectedTrip,
+                        endDate: e.target.value,
+                      })
+                    }
+                  />
+                </div>
+              </Form.Group>
+
+              <Form.Group className="mb-3">
+                <Form.Label>Budget</Form.Label>
+                <Form.Control
+                  type="number"
+                  value={selectedTrip.budget}
+                  onChange={(e) =>
+                    setSelectedTrip({
+                      ...selectedTrip,
+                      budget: e.target.value,
+                    })
+                  }
+                />
+              </Form.Group>
+
+              <Form.Group className="mb-3">
+                <Form.Label>Description</Form.Label>
+                <Form.Control
+                  as="textarea"
+                  rows={3}
+                  value={selectedTrip.description}
+                  onChange={(e) =>
+                    setSelectedTrip({
+                      ...selectedTrip,
+                      description: e.target.value,
+                    })
+                  }
+                />
+              </Form.Group>
+            </>
+          ) : (
+            <>
+              <p>
+                <b>Destination:</b> {selectedTrip?.destination}
+              </p>
+              <p>
+                <b>Dates:</b> {selectedTrip?.startDate} →{" "}
+                {selectedTrip?.endDate}
+              </p>
+              <p>
+                <b>Budget:</b> ${selectedTrip?.budget}
+              </p>
+              <p>
+                <b>Travel Mode:</b> {travelIcons[selectedTrip?.travelMode]}{" "}
+                {selectedTrip?.travelMode}
+              </p>
+              <p>
+                <b>Accommodation:</b>{" "}
+                {accommodationIcons[selectedTrip?.accommodation]}{" "}
+                {selectedTrip?.accommodation}
+              </p>
+              <p>
+                <b>Activities:</b> {selectedTrip?.activities.join(", ")}
+              </p>
+              <p>
+                <b>Description:</b> {selectedTrip?.description}
+              </p>
+            </>
+          )}
         </Modal.Body>
         <Modal.Footer>
-          <Button variant="secondary" onClick={() => setSelectedTrip(null)}>
-            Close
-          </Button>
+          {editIndex !== null ? (
+            <Button variant="success" onClick={handleEditSave}>
+              Save Changes
+            </Button>
+          ) : (
+            <Button
+              variant="secondary"
+              onClick={() => setSelectedTrip(null)}
+            >
+              Close
+            </Button>
+          )}
         </Modal.Footer>
       </Modal>
     </div>

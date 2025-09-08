@@ -26,7 +26,7 @@ const Dashboard = () => {
           <Nav.Link as={Link} to="/trip" className="text-white fw-semibold">
             ✈️ My Trips
           </Nav.Link>
-          <Nav.Link as={Link} to="/trip" className="text-white fw-semibold">
+          <Nav.Link as={Link} to="/createtrip" className="text-white fw-semibold">
     ✈️ Create Trip
   </Nav.Link>
   <Nav.Link as={NavLink} to="/viewtrip" className="text-white fw-semibold">

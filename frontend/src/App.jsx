@@ -5,8 +5,8 @@ import Login from "./pages/Login";
 import Signup from "./pages/Signup";
 import Profile from "./pages/Profile"; 
 import MyTrip from "./pages/MyTrip";
-import ViewTrip from "./pages/ViewTrip"; // ✅ make sure import name matches file
-
+import ViewTrip from "./pages/ViewTrip"; 
+import CreateTrip from "./pages/CreateTrip";
 function App() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
 
@@ -45,8 +45,11 @@ function App() {
       <Route path="/profile" element={<Profile />} /> 
 
       {/* Trips */}
-      <Route path="/trip" element={<MyTrip />} />     {/* Create + View own trips */}
-      <Route path="/viewtrip" element={<ViewTrip />} /> {/* Predefined trips */}
+     
+      <Route path="/viewtrip/:id" element={<ViewTrip />} />
+      <Route path="/createtrip" element={<CreateTrip />} />
+         <Route path="/trip" element={<MyTrip />} />
+
     </Routes>
   );
 }
