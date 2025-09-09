@@ -1,5 +1,20 @@
-import React from "react";
-import { useParams, useNavigate } from "react-router-dom";
+// src/pages/ViewTrip.jsx
+import React, { useEffect, useMemo, useState } from "react";
+import {
+  Container,
+  Row,
+  Col,
+  Card,
+  Badge,
+  ListGroup,
+  Button,
+  ProgressBar,
+  Carousel,
+  Tabs,
+  Tab,
+  Form,
+} from "react-bootstrap";
+import { useParams, Link } from "react-router-dom";
 import {
   FaPlane,
   FaTrain,
@@ -9,174 +24,367 @@ import {
   FaHome,
   FaCampground,
   FaBed,
-  FaCalendarAlt,
-  FaMoneyBill,
-  FaMapMarkerAlt,
+  FaUserFriends,
+  FaShareAlt,
+  FaCheckCircle,
+  FaMapMarkedAlt,
+  FaUmbrellaBeach,
+  FaCloudSun,
+  FaCloudRain,
+  FaSun,
+  FaCloud,
+  FaShoppingBag,
 } from "react-icons/fa";
-import { Badge, Button } from "react-bootstrap";
 
-// Helper: check trip status
-const getTripStatus = (startDate, endDate) => {
+// ------------------ helpers ------------------
+const statusFromDates = (start, end) => {
   const today = new Date();
-  const start = new Date(startDate);
-  const end = new Date(endDate);
-
-  if (today < start) return "Upcoming";
-  if (today >= start && today <= end) return "Ongoing";
-  if (today > end) return "Completed";
+  const s = new Date(start);
+  const e = new Date(end);
+  if (today < s) return "Upcoming";
+  if (today >= s && today <= e) return "Ongoing";
+  if (today > e) return "Completed";
   return "Cancelled";
 };
 
-const ViewTrip = () => {
-  const { id } = useParams();
-  const navigate = useNavigate();
+const travelIcons = {
+  Flight: <FaPlane />,
+  Train: <FaTrain />,
+  Car: <FaCar />,
+  Bus: <FaBus />,
+};
 
-  const trips = JSON.parse(localStorage.getItem("tbf_trips")) || [];
-  const trip = trips.find((_, i) => i === parseInt(id));
+const stayIcons = {
+  Hotel: <FaHotel />,
+  Hostel: <FaBed />,
+  Airbnb: <FaHome />,
+  Camping: <FaCampground />,
+};
 
-  if (!trip) {
-    return <h3 className="text-center mt-5">⚠️ Trip not found!</h3>;
+const emojiWeather = (type) => {
+  switch (type) {
+    case "Sunny":
+      return <FaSun />;
+    case "Partly Cloudy":
+      return <FaCloudSun />;
+    case "Cloudy":
+      return <FaCloud />;
+    case "Rainy":
+      return <FaCloudRain />;
+    default:
+      return <FaCloudSun />;
   }
+};
 
-  const travelIcons = {
-    Flight: <FaPlane className="text-primary" />,
-    Train: <FaTrain className="text-success" />,
-    Car: <FaCar className="text-warning" />,
-    Bus: <FaBus className="text-danger" />,
-  };
+// Simple CSS Pie via conic-gradient
+const Pie = ({ planned = 0, budget = 1 }) => {
+  const pct = Math.min(100, Math.round((planned / budget) * 100));
+  return (
+    <div
+      style={{
+        width: 130,
+        height: 130,
+        borderRadius: "50%",
+        background: `conic-gradient(#0d6efd ${pct}%, #e9ecef ${pct}% 100%)`,
+        display: "grid",
+        placeItems: "center",
+        fontWeight: 700,
+      }}
+      title={`${pct}% of budget planned`}
+    >
+      {pct}%
+    </div>
+  );
+};
 
-  const accommodationIcons = {
-    Hotel: <FaHotel className="text-primary" />,
-    Hostel: <FaBed className="text-success" />,
-    Airbnb: <FaHome className="text-warning" />,
-    Camping: <FaCampground className="text-danger" />,
-  };
+// ------------------ component ------------------
+const ViewTrip = () => {
+  const { id } = useParams(); // optional
+  const [trip, setTrip] = useState(null);
 
-  const status = getTripStatus(trip.startDate, trip.endDate);
+  // checklist state
+  const checklistKey = useMemo(() => `tbf_checklist_${id ?? "demo"}`, [id]);
+  const [checklist, setChecklist] = useState([
+    { label: "Passport / ID", done: false },
+    { label: "Tickets & Booking", done: false },
+    { label: "Camera / Charger", done: false },
+    { label: "Medicines", done: false },
+    { label: "Trek Shoes", done: false },
+  ]);
 
-  // delete handler
-  const handleDelete = () => {
-    const updated = trips.filter((_, i) => i !== parseInt(id));
-    localStorage.setItem("tbf_trips", JSON.stringify(updated));
-    navigate("/mytrip");
+  // demo data
+  const demoTrip = useMemo(
+    () => ({
+      title: "Paris & Versailles Getaway",
+      destination: "Paris, France",
+      startDate: "2025-09-10",
+      endDate: "2025-09-14",
+      budget: 50000,
+      plannedSpend: 32000,
+      travelMode: "Flight",
+      accommodation: "Hotel",
+      hotel: {
+        name: "Hotel Lumière",
+        address: "12 Rue de Rivoli, Paris",
+        checkIn: "2025-09-10",
+        checkOut: "2025-09-14",
+      },
+      tickets: {
+        bookingId: "PAR-AX1245",
+        departFrom: "DEL Airport",
+        arriveTo: "CDG Airport",
+        departTime: "2025-09-10 06:30",
+        returnTime: "2025-09-14 21:15",
+      },
+      itinerary: [
+        {
+          day: 1,
+          title: "Arrival & Seine Walk",
+          items: ["Arrive at CDG", "Check-in Hotel", "Evening Seine walk", "Dinner near Louvre"],
+        },
+        {
+          day: 2,
+          title: "City Highlights",
+          items: ["Eiffel Tower", "Louvre Museum", "Cafe hopping"],
+        },
+        {
+          day: 3,
+          title: "Versailles Day Trip",
+          items: ["RER to Versailles", "Palace & Gardens", "Back to Paris"],
+        },
+        {
+          day: 4,
+          title: "Shopping & Departure",
+          items: ["Le Marais shopping", "Macarons 🍬", "Departure"],
+        },
+      ],
+      activities: ["Culture", "Food", "Photography", "Shopping"],
+      description: "Light itinerary with cafe time and evening walks.",
+      images: [
+        "https://images.unsplash.com/photo-1502602898657-3e91760cbb34",
+        "https://images.unsplash.com/photo-1469474968028-56623f02e42e",
+      ],
+      mapPins: [
+        { label: "CDG Airport", q: "Charles de Gaulle Airport, Paris" },
+        { label: "Hotel Lumière", q: "12 Rue de Rivoli, Paris" },
+        { label: "Eiffel Tower", q: "Eiffel Tower, Paris" },
+        { label: "Louvre Museum", q: "Louvre Museum, Paris" },
+        { label: "Versailles Palace", q: "Palace of Versailles" },
+      ],
+      buddies: [
+        { name: "Aarav", interests: ["Food", "Photo"], status: "Joined", avatar: "https://i.pravatar.cc/80?img=12" },
+        { name: "Maya", interests: ["Culture"], status: "Pending", avatar: "https://i.pravatar.cc/80?img=32" },
+        { name: "Kabir", interests: ["Shopping"], status: "Invited", avatar: "https://i.pravatar.cc/80?img=22" },
+      ],
+      weather: [
+        { day: "Wed", type: "Sunny", temp: "27°C" },
+        { day: "Thu", type: "Partly Cloudy", temp: "25°C" },
+        { day: "Fri", type: "Rainy", temp: "22°C" },
+        { day: "Sat", type: "Sunny", temp: "26°C" },
+      ],
+    }),
+    []
+  );
+
+  // load trip
+  useEffect(() => {
+    try {
+      const saved = JSON.parse(localStorage.getItem("tbf_trips")) || [];
+      const t = id != null && saved[id] ? saved[id] : demoTrip;
+      t.budget = Number(t.budget || demoTrip.budget);
+      t.plannedSpend = Number(t.plannedSpend ?? Math.floor((t.budget || 1) * 0.6));
+      setTrip(t);
+    } catch {
+      setTrip(demoTrip);
+    }
+  }, [id, demoTrip]);
+
+  // load checklist
+  useEffect(() => {
+    const saved = JSON.parse(localStorage.getItem(checklistKey));
+    if (saved && Array.isArray(saved)) setChecklist(saved);
+  }, [checklistKey]);
+
+  // save checklist
+  useEffect(() => {
+    localStorage.setItem(checklistKey, JSON.stringify(checklist));
+  }, [checklist, checklistKey]);
+
+  if (!trip) return null;
+  const status = statusFromDates(trip.startDate, trip.endDate);
+
+  const handleChecklistToggle = (idx) => {
+    setChecklist((prev) =>
+      prev.map((c, i) => (i === idx ? { ...c, done: !c.done } : c))
+    );
   };
 
   return (
-    <div className="container mt-4 mb-5">
-      {/* Trip Title + Status */}
-      <div className="d-flex justify-content-between align-items-center mb-4">
-        <h2>🌍 {trip.destination}</h2>
-        <Badge
-          bg={
-            status === "Upcoming"
-              ? "primary"
-              : status === "Ongoing"
-              ? "success"
-              : status === "Completed"
-              ? "secondary"
-              : "danger"
-          }
-        >
-          {status}
-        </Badge>
-      </div>
-
-      {/* Cover Image */}
-      {trip.image && (
-        <img
-          src={trip.image}
-          alt="trip"
-          className="img-fluid rounded mb-4 shadow"
-        />
-      )}
-
-      {/* Dates */}
-      <div className="card p-3 mb-3 shadow-sm">
-        <h5>
-          <FaCalendarAlt className="me-2 text-info" />
-          Dates
-        </h5>
-        <p>
-          {trip.startDate} → {trip.endDate}
-        </p>
-      </div>
-
-      {/* Budget */}
-      <div className="card p-3 mb-3 shadow-sm">
-        <h5>
-          <FaMoneyBill className="me-2 text-success" />
-          Budget
-        </h5>
-        <p>₹ {trip.budget}</p>
-      </div>
-
-      {/* Travel Details */}
-      <div className="card p-3 mb-3 shadow-sm">
-        <h5>
-          <FaPlane className="me-2 text-primary" />
-          Travel Mode
-        </h5>
-        <p>
-          {travelIcons[trip.travelMode]} {trip.travelMode}
-        </p>
-        {trip.ticketId && <p><b>Ticket/Booking ID:</b> {trip.ticketId}</p>}
-        {trip.departure && <p><b>Departure:</b> {trip.departure}</p>}
-        {trip.arrival && <p><b>Arrival:</b> {trip.arrival}</p>}
-      </div>
-
-      {/* Accommodation */}
-      <div className="card p-3 mb-3 shadow-sm">
-        <h5>
-          <FaHotel className="me-2 text-warning" />
-          Accommodation
-        </h5>
-        <p>
-          {accommodationIcons[trip.accommodation]} {trip.accommodation}
-        </p>
-        {trip.hotelName && <p><b>Hotel:</b> {trip.hotelName}</p>}
-        {trip.hotelAddress && <p><b>Address:</b> {trip.hotelAddress}</p>}
-        {trip.checkin && <p><b>Check-in:</b> {trip.checkin}</p>}
-        {trip.checkout && <p><b>Check-out:</b> {trip.checkout}</p>}
-      </div>
-
-      {/* Activities */}
-      <div className="card p-3 mb-3 shadow-sm">
-        <h5>
-          <FaMapMarkerAlt className="me-2 text-danger" />
-          Activities
-        </h5>
-        {trip.activities && trip.activities.length > 0 ? (
-          <div className="d-flex flex-wrap gap-2">
-            {trip.activities.map((act, i) => (
-              <Badge bg="info" key={i}>
-                {act}
-              </Badge>
-            ))}
+    <Container fluid className="py-4">
+      {/* Header */}
+      <Row className="mb-3 align-items-center">
+        <Col md={8}>
+          <h3 className="mb-1">
+            {trip.title} — <Badge bg="secondary">{trip.destination}</Badge>
+          </h3>
+          <div className="text-muted">
+            {trip.startDate} → {trip.endDate} •{" "}
+            <Badge bg={status === "Upcoming" ? "primary" : status === "Ongoing" ? "success" : "dark"}>
+              {status}
+            </Badge>
           </div>
-        ) : (
-          <p>No activities added</p>
-        )}
-      </div>
+        </Col>
+        <Col md={4} className="text-md-end mt-3 mt-md-0">
+          <Link to="/mytrip">
+            <Button variant="outline-secondary" className="me-2">← Back</Button>
+          </Link>
+          <Button variant="primary"><FaShareAlt className="me-2" />Share</Button>
+        </Col>
+      </Row>
 
-      {/* Description */}
-      <div className="card p-3 mb-3 shadow-sm">
-        <h5>📝 Notes</h5>
-        <p>{trip.description || "No description provided."}</p>
-      </div>
+      {/* Top row */}
+      <Row className="g-4">
+        <Col lg={6}>
+          <Card>
+            {trip.images?.length ? (
+              <Carousel>
+                {trip.images.map((src, i) => (
+                  <Carousel.Item key={i}>
+                    <img src={src} alt="slide" style={{ width: "100%", height: 320, objectFit: "cover" }} />
+                  </Carousel.Item>
+                ))}
+              </Carousel>
+            ) : (
+              <div className="d-flex h-100 align-items-center justify-content-center p-5">
+                <FaUmbrellaBeach size={48} className="me-2" />
+                <span className="text-muted">No images yet</span>
+              </div>
+            )}
+          </Card>
+        </Col>
 
-      {/* Action Buttons */}
-      <div className="d-flex gap-3 mt-3">
-        <Button variant="warning" onClick={() => navigate(`/createtrip/${id}`)}>
-          ✏️ Edit
-        </Button>
-        <Button variant="danger" onClick={handleDelete}>
-          🗑 Delete
-        </Button>
-        <Button variant="secondary" onClick={() => navigate("/mytrip")}>
-          ⬅ Back to My Trips
-        </Button>
-      </div>
-    </div>
+        <Col lg={3}>
+          <Card>
+            <Card.Body>
+              <h5>Travel Details</h5>
+              <ListGroup variant="flush">
+                <ListGroup.Item>
+                  Mode: {travelIcons[trip.travelMode]} {trip.travelMode}
+                </ListGroup.Item>
+                <ListGroup.Item>
+                  Stay: {stayIcons[trip.accommodation]} {trip.accommodation}
+                </ListGroup.Item>
+              </ListGroup>
+            </Card.Body>
+          </Card>
+        </Col>
+
+        <Col lg={3}>
+          <Card>
+            <Card.Body className="text-center">
+              <h6>Expense Tracker</h6>
+              <Pie planned={trip.plannedSpend} budget={trip.budget} />
+              <div className="mt-2">Budget: ₹{trip.budget}</div>
+              <div>Planned: ₹{trip.plannedSpend}</div>
+              <ProgressBar now={(trip.plannedSpend / trip.budget) * 100} className="mt-2" />
+            </Card.Body>
+          </Card>
+        </Col>
+      </Row>
+
+      {/* ---- Tabs Section ---- */}
+      <Card className="shadow-sm mt-4">
+        <Card.Body>
+          <Tabs defaultActiveKey="timeline" fill>
+            {/* Timeline */}
+            <Tab eventKey="timeline" title="Timeline">
+              <ListGroup>
+                {trip.itinerary.map((d) => (
+                  <ListGroup.Item key={d.day}>
+                    <strong>Day {d.day}:</strong> {d.title} — {d.items.join(", ")}
+                  </ListGroup.Item>
+                ))}
+              </ListGroup>
+            </Tab>
+
+            {/* Map */}
+            <Tab eventKey="map" title="Map">
+              <Tabs defaultActiveKey={trip.mapPins[0].label} className="mb-3">
+                {trip.mapPins.map((p, i) => (
+                  <Tab eventKey={p.label} title={p.label} key={i}>
+                    <div className="ratio ratio-16x9">
+                      <iframe
+                        title={p.label}
+                        src={`https://www.google.com/maps?q=${encodeURIComponent(p.q)}&output=embed`}
+                        style={{ border: 0 }}
+                        allowFullScreen
+                      />
+                    </div>
+                  </Tab>
+                ))}
+              </Tabs>
+            </Tab>
+
+            {/* Buddies */}
+            <Tab eventKey="buddies" title="Buddies">
+              {trip.buddies.map((b, i) => (
+                <ListGroup.Item key={i}>
+                  <img src={b.avatar} alt={b.name} style={{ width: 32, borderRadius: "50%", marginRight: 8 }} />
+                  {b.name} — {b.status}
+                </ListGroup.Item>
+              ))}
+            </Tab>
+
+            {/* Weather */}
+            <Tab eventKey="weather" title="Weather">
+              <Row>
+                {trip.weather.map((w, i) => (
+                  <Col xs={6} md={3} key={i}>
+                    <Card className="text-center">
+                      <Card.Body>
+                        <div>{w.day}</div>
+                        <div style={{ fontSize: 24 }}>{emojiWeather(w.type)}</div>
+                        <div>{w.temp}</div>
+                      </Card.Body>
+                    </Card>
+                  </Col>
+                ))}
+              </Row>
+            </Tab>
+
+            {/* Checklist */}
+            <Tab eventKey="checklist" title="Checklist">
+              <ListGroup>
+                {checklist.map((c, i) => (
+                  <ListGroup.Item key={i}>
+                    <Form.Check
+                      type="checkbox"
+                      label={c.label}
+                      checked={c.done}
+                      onChange={() => handleChecklistToggle(i)}
+                    />
+                  </ListGroup.Item>
+                ))}
+              </ListGroup>
+            </Tab>
+
+            {/* Activities */}
+            <Tab eventKey="activities" title="Activities">
+              {trip.activities.map((a, i) => (
+                <Badge bg="info" key={i} className="me-2">
+                  {a}
+                </Badge>
+              ))}
+            </Tab>
+
+            {/* Notes */}
+            <Tab eventKey="notes" title="Notes">
+              <p>{trip.description}</p>
+            </Tab>
+          </Tabs>
+        </Card.Body>
+      </Card>
+    </Container>
   );
 };
 
