@@ -121,10 +121,49 @@ const ViewTrip = () => {
       travelMode: "Flight",
       accommodation: "Hotel",
       itinerary: [
-        { day: 1, title: "Arrival & Seine Walk", items: ["Arrive at CDG", "Hotel check-in", "Evening walk"] },
-        { day: 2, title: "City Highlights", items: ["Eiffel Tower", "Louvre Museum", "Cafe hopping"] },
-        { day: 3, title: "Versailles Day Trip", items: ["Palace of Versailles", "Gardens", "Return"] },
-        { day: 4, title: "Shopping & Departure", items: ["Le Marais shopping", "Departure"] },
+        {
+          day: 1,
+          date: "2025-09-10",
+          title: "Arrival & Seine Walk",
+          description: "Landing in Paris, hotel check-in, and evening walk along the Seine.",
+          activities: [
+            { time: "10:00", name: "Arrive at CDG", icon: <FaPlane />, details: "Flight landing at Charles de Gaulle Airport", mapLink: "Charles de Gaulle Airport, Paris" },
+            { time: "12:00", name: "Hotel check-in", icon: <FaHotel />, details: "Check in at hotel near Eiffel Tower" },
+            { time: "18:00", name: "Evening walk", icon: <FaCloudSun />, details: "Walk along the Seine river at sunset" }
+          ]
+        },
+        {
+          day: 2,
+          date: "2025-09-11",
+          title: "City Highlights",
+          description: "Exploring Paris main attractions.",
+          activities: [
+            { time: "09:00", name: "Eiffel Tower", icon: <FaMapMarkedAlt />, details: "Morning visit to Eiffel Tower", mapLink: "Eiffel Tower, Paris" },
+            { time: "11:00", name: "Louvre Museum", icon: <FaMapMarkedAlt />, details: "Explore world-famous art at Louvre", mapLink: "Louvre Museum, Paris" },
+            { time: "15:00", name: "Cafe hopping", icon: <FaCloudSun />, details: "Try Parisian coffee and pastries" }
+          ]
+        },
+        {
+          day: 3,
+          date: "2025-09-12",
+          title: "Versailles Day Trip",
+          description: "A full-day trip to Versailles.",
+          activities: [
+            { time: "09:00", name: "Palace of Versailles", icon: <FaMapMarkedAlt />, details: "Tour the palace", mapLink: "Palace of Versailles" },
+            { time: "12:00", name: "Gardens", icon: <FaCloudSun />, details: "Walk through Versailles gardens" },
+            { time: "18:00", name: "Return to Paris", icon: <FaBus />, details: "Bus ride back to Paris" }
+          ]
+        },
+        {
+          day: 4,
+          date: "2025-09-13",
+          title: "Shopping & Departure",
+          description: "Last-minute shopping and departure.",
+          activities: [
+            { time: "10:00", name: "Le Marais shopping", icon: <FaBars />, details: "Shopping in Le Marais district" },
+            { time: "16:00", name: "Departure", icon: <FaPlane />, details: "Flight back home" }
+          ]
+        }
       ],
       activities: ["Culture", "Food", "Photography", "Shopping"],
       description: "Light itinerary with cafe time and evening walks.",
@@ -145,6 +184,7 @@ const ViewTrip = () => {
     }),
     []
   );
+
 
   useEffect(() => {
     setTrip(demoTrip);
