@@ -35,6 +35,8 @@ import {
   FaInfoCircle,
 } from "react-icons/fa";
 import TripTimeline from "../components/TripTimeline";
+import BuddiesTab from "../components/BuddiesTab";
+
 
 // ------------------ helpers ------------------
 const statusFromDates = (start, end) => {
@@ -172,10 +174,31 @@ const ViewTrip = () => {
         { label: "Eiffel Tower", q: "Eiffel Tower, Paris" },
         { label: "Louvre Museum", q: "Louvre Museum, Paris" },
       ],
-      buddies: [
-        { name: "Aarav", status: "Joined", avatar: "https://i.pravatar.cc/80?img=12" },
-        { name: "Maya", status: "Pending", avatar: "https://i.pravatar.cc/80?img=32" },
-      ],
+     buddies: [
+  {
+    name: "Aarav",
+    status: "Joined",
+    avatar: "https://i.pravatar.cc/80?img=12",
+    role: "Leader",
+    interests: ["Photography", "Food"],
+    contributions: ["Booked Hotel", "Planned Itinerary"],
+    email: "aarav@example.com",
+    instagram: "aarav_travel",
+    whatsapp: "919876543210"
+  },
+  {
+    name: "Maya",
+    status: "Pending",
+    avatar: "https://i.pravatar.cc/80?img=32",
+    role: "Member",
+    interests: ["Shopping", "Culture"],
+    contributions: [],
+    email: "maya@example.com",
+    instagram: "maya_paris",
+    whatsapp: "919812345678"
+  }
+],
+
       weather: [
         { day: "Wed", type: "Sunny", temp: "27°C" },
         { day: "Thu", type: "Partly Cloudy", temp: "25°C" },
@@ -283,16 +306,10 @@ const ViewTrip = () => {
             ))
           )}
 
-          {activeTab === "buddies" && (
-            <ListGroup>
-              {trip.buddies.map((b, i) => (
-                <ListGroup.Item key={i}>
-                  <img src={b.avatar} alt={b.name} style={{ width: 30, borderRadius: "50%", marginRight: 8 }} />
-                  {b.name} — {b.status}
-                </ListGroup.Item>
-              ))}
-            </ListGroup>
-          )}
+         {activeTab === "buddies" && (
+  <BuddiesTab buddies={trip.buddies} />
+)}
+
 
           {activeTab === "weather" && (
             <Row>
