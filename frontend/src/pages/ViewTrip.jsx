@@ -310,11 +310,10 @@ const ViewTrip = () => {
          {activeTab === "buddies" && (
   <BuddiesTab buddies={trip.buddies} />
 )}
+{activeTab === "weather" && <WeatherCard />}
 
 
-       
-
-
+      
           {activeTab === "checklist" && (
             <ListGroup>
               {checklist.map((c, i) => (
