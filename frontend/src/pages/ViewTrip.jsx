@@ -312,48 +312,7 @@ const ViewTrip = () => {
 )}
 
 
-        {activeTab === "weather" && (
-  <Row>
-    {/* Current Weather Info */}
-    <Col md={12}>
-      <Card className="mb-3 text-center">
-        <Card.Body>
-          <h5>🌍 Weather in {trip.destination}</h5>
-          <p style={{ fontSize: "1.2rem", margin: 0 }}>
-            {emojiWeather("Sunny")} 27°C • Sunny
-          </p>
-          <small>Feels like 26°C | Humidity: 55% | Wind: 14 km/h NE</small>
-          <br />
-          <small>🌅 Sunrise: 6:25 AM | 🌇 Sunset: 7:45 PM</small>
-        </Card.Body>
-      </Card>
-    </Col>
-
-    {/* Forecast */}
-    {trip.weather.map((w, i) => (
-      <Col xs={6} md={4} key={i}>
-        <Card className="text-center mb-3">
-          <Card.Body>
-            <div>{w.day}</div>
-            <div style={{ fontSize: 24 }}>{emojiWeather(w.type)}</div>
-            <div>{w.temp}</div>
-          </Card.Body>
-        </Card>
-      </Col>
-    ))}
-
-    {/* Suggestions / Alerts */}
-    <Col md={12}>
-      <Card className="p-2 text-center">
-        <small>☂️ Suggestion: Carry a light jacket, rain expected.</small>
-        <br />
-        <small>✅ Safety: No weather alerts</small>
-        <br />
-        <small>☀️ UV Index: Moderate | 🌬 AQI: Good</small>
-      </Card>
-    </Col>
-  </Row>
-)}
+       
 
 
           {activeTab === "checklist" && (

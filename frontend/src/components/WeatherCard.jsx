@@ -1,88 +1,127 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import {
-  WiDaySunny,
-  WiCloudy,
-  WiRain,
-  WiSnow,
-  WiStrongWind,
-  WiHumidity,
-  WiSunrise,
-  WiSunset,
-} from "react-icons/wi";
-import { FaTshirt } from "react-icons/fa";
+  Sun,
+  Moon,
+  Cloud,
+  CloudRain,
+  Wind,
+  Droplets,
+  Sunrise,
+  Sunset,
+  Umbrella,
+} from "lucide-react";
 
-const WeatherCard = ({ weather }) => {
-  if (!weather) return null;
+// Mock data for different locations
+const weatherDB = {
+  "Paris, France": {
+    current: {
+      temp: 27,
+      condition: "Sunny",
+      feelsLike: 26,
+      humidity: 55,
+      wind: "14 km/h NE",
+      sunrise: "6:25 AM",
+      sunset: "7:45 PM",
+      suggestion: "Carry a light jacket, rain expected tomorrow.",
+      isDay: true,
+    },
+    forecast: [
+      { day: "Wed", temp: 27, condition: "Sunny" },
+      { day: "Thu", temp: 25, condition: "Cloudy" },
+      { day: "Fri", temp: 22, condition: "Rainy" },
+    ],
+  },
+  "New York, USA": {
+    current: {
+      temp: 18,
+      condition: "Rainy",
+      feelsLike: 17,
+      humidity: 70,
+      wind: "20 km/h W",
+      sunrise: "6:10 AM",
+      sunset: "7:20 PM",
+      suggestion: "Carry an umbrella, wear waterproof shoes.",
+      isDay: false,
+    },
+    forecast: [
+      { day: "Wed", temp: 18, condition: "Rainy" },
+      { day: "Thu", temp: 20, condition: "Cloudy" },
+      { day: "Fri", temp: 22, condition: "Sunny" },
+    ],
+  },
+};
 
-  // Icon for condition
-  const getIcon = (condition) => {
+const WeatherTrip = () => {
+  const [location, setLocation] = useState("Paris, France");
+  const [weather, setWeather] = useState(weatherDB[location].current);
+
+  const [forecast, setForecast] = useState(weatherDB[location].forecast);
+
+  // Update weather on location change
+  useEffect(() => {
+    setWeather(weatherDB[location].current);
+    setForecast(weatherDB[location].forecast);
+  }, [location]);
+
+  const getIcon = (condition, size = 40, isDay = true) => {
     switch (condition) {
       case "Sunny":
-        return <WiDaySunny size={22} color="#f39c12" />;
+        return isDay ? <Sun size={size} className="text-yellow-400" /> : <Moon size={size} className="text-gray-300" />;
       case "Cloudy":
-        return <WiCloudy size={22} color="#7f8c8d" />;
+        return <Cloud size={size} className="text-gray-500" />;
       case "Rainy":
-        return <WiRain size={22} color="#3498db" />;
-      case "Snowy":
-        return <WiSnow size={22} color="#00BFFF" />;
+        return <CloudRain size={size} className="text-blue-500" />;
       default:
-        return <WiDaySunny size={22} color="#f39c12" />;
+        return <Sun size={size} className="text-yellow-400" />;
     }
   };
 
   return (
-    <div className="card shadow-sm border-0 rounded-3">
-      {/* Header */}
-      <div className="card-header bg-white text-center fw-bold">
-        🌍 Weather in {weather.location}
+    <div className="max-w-md mx-auto bg-white shadow-xl rounded-xl p-4">
+      {/* Location Selector */}
+      <div className="mb-4">
+        <select
+          className="border p-2 rounded w-full"
+          value={location}
+          onChange={(e) => setLocation(e.target.value)}
+        >
+          {Object.keys(weatherDB).map((loc) => (
+            <option key={loc} value={loc}>{loc}</option>
+          ))}
+        </select>
       </div>
 
       {/* Current Weather */}
-      <div className="card-body text-center">
-        <h4>
-          {getIcon(weather.current.condition)} {weather.current.temp}°C •{" "}
-          {weather.current.condition}
-        </h4>
-        <p className="text-muted mb-1">
-          Feels like {weather.current.feelsLike}°C | Humidity:{" "}
-          {weather.current.humidity}% | Wind: {weather.current.wind}
+      <div className="text-center mb-4">
+        <div className="flex justify-center">{getIcon(weather.condition, 60, weather.isDay)}</div>
+        <h2 className="text-3xl font-bold mt-2">{weather.temp}°C • {weather.condition}</h2>
+        <p className="text-gray-600 text-sm italic">
+          Feels like {weather.feelsLike}°C • {weather.isDay ? "Day" : "Night"}
         </p>
-        <p className="text-muted small mb-3">
-          <WiSunrise size={20} color="#f39c12" /> Sunrise: {weather.sunrise} |
-          <WiSunset size={20} color="#e74c3c" /> Sunset: {weather.sunset}
-        </p>
-
-        {/* Forecast Section */}
-        <div className="row text-center mb-3">
-          {weather.forecast.map((f, i) => (
-            <div key={i} className="col border rounded p-2 mx-1 bg-light">
-              <strong>{f.date}</strong>
-              <div>{getIcon(f.condition)}</div>
-              <span>{f.temp}</span>
-            </div>
-          ))}
+        <div className="flex justify-center gap-4 mt-2 text-gray-700 text-sm">
+          <span className="flex items-center gap-1"><Droplets size={16} /> {weather.humidity}%</span>
+          <span className="flex items-center gap-1"><Wind size={16} /> {weather.wind}</span>
         </div>
+      </div>
 
-        {/* Suggestions */}
-        {weather.suggestion && (
-          <p className="text-primary mb-1">
-            ☂️ Suggestion: {weather.suggestion}
-          </p>
-        )}
+      {/* Suggestions */}
+      <div className="bg-gray-100 p-3 rounded-lg text-sm mb-4 flex items-center gap-2">
+        <Umbrella size={16} className="text-blue-500" /> {weather.suggestion}
+      </div>
 
-        {/* Safety */}
-        {weather.safety && (
-          <p className="text-success mb-1">✅ Safety: {weather.safety}</p>
-        )}
-
-        {/* Extras */}
-        <p className="text-muted small mb-0">
-          ☀️ UV Index: {weather.extras.uv} | 🌍 AQI: {weather.extras.aqi} | 🕒{" "}
-          Local Time: {weather.extras.localTime}
-        </p>
+      {/* Forecast */}
+      <h3 className="font-semibold mb-2">3-Day Forecast</h3>
+      <div className="flex justify-between gap-2">
+        {forecast.map((f, idx) => (
+          <div key={idx} className="flex-1 bg-gray-50 p-2 rounded-lg text-center">
+            <p className="font-semibold">{f.day}</p>
+            <div className="flex justify-center mt-1">{getIcon(f.condition, 30, weather.isDay)}</div>
+            <p className="text-sm mt-1">{f.temp}°C</p>
+          </div>
+        ))}
       </div>
     </div>
   );
 };
 
-export default WeatherCard;
+export default WeatherTrip;

@@ -1,9 +1,6 @@
-body { font-family: Arial, sans-serif; margin: 0; padding: 0; background:#f7f7f7;}
-.navbar { display:flex; justify-content:space-between; align-items:center; padding:12px 20px; background:#0b5cff; color:white; }
-.navbar a { color:white; margin-left:12px; text-decoration:none; }
-.page { padding:20px; }
-.grid { display:grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap:16px; margin-top:16px; }
-.card { padding:12px; border-radius:8px; box-shadow: 0 1px 4px rgba(0,0,0,0.08); background:white; }
-h1,h2,h3 { margin:0 0 12px 0; }
-input, button { margin:6px 0; padding:8px; }
-button { background:#0b5cff; border:none; color:white; cursor:pointer; border-radius:4px; }
+@import "bootstrap/dist/css/bootstrap.min.css";
+@import "tailwindcss";
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
