@@ -37,6 +37,7 @@ import {
 import TripTimeline from "../components/TripTimeline";
 import BuddiesTab from "../components/BuddiesTab";
 import WeatherCard from "../components/WeatherCard";
+import Checklist from "../components/Checklist";
 
 
 // ------------------ helpers ------------------
@@ -314,20 +315,29 @@ const ViewTrip = () => {
 
 
       
-          {activeTab === "checklist" && (
-            <ListGroup>
-              {checklist.map((c, i) => (
-                <ListGroup.Item key={i}>
-                  <Form.Check
-                    type="checkbox"
-                    label={c.label}
-                    checked={c.done}
-                    onChange={() => handleChecklistToggle(i)}
-                  />
-                </ListGroup.Item>
-              ))}
-            </ListGroup>
+                    {activeTab === "checklist" && (
+            <>
+              {/* Old checklist (simple ListGroup) */}
+              <h6 className="mb-3">Basic Checklist</h6>
+              <ListGroup className="mb-4">
+                {checklist.map((c, i) => (
+                  <ListGroup.Item key={i}>
+                    <Form.Check
+                      type="checkbox"
+                      label={c.label}
+                      checked={c.done}
+                      onChange={() => handleChecklistToggle(i)}
+                    />
+                  </ListGroup.Item>
+                ))}
+              </ListGroup>
+
+              {/* New category-wise checklist cards */}
+              <h6 className="mb-3">Detailed Checklist</h6>
+              <Checklist />
+            </>
           )}
+
 
           {activeTab === "activities" && (
             trip.activities.map((a, i) => (
