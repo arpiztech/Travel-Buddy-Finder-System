@@ -105,14 +105,6 @@ const ViewTrip = () => {
   const [trip, setTrip] = useState(null);
   const [activeTab, setActiveTab] = useState("overview");
 
-  const checklistKey = useMemo(() => `tbf_checklist_${id ?? "demo"}`, [id]);
-  const [checklist, setChecklist] = useState([
-    { label: "Passport / ID", done: false },
-    { label: "Tickets & Booking", done: false },
-    { label: "Camera / Charger", done: false },
-    { label: "Medicines", done: false },
-    { label: "Trek Shoes", done: false },
-  ]);
 
   const demoTrip = useMemo(
     () => ({
@@ -314,29 +306,8 @@ const ViewTrip = () => {
 {activeTab === "weather" && <WeatherCard />}
 
 
-      
-                    {activeTab === "checklist" && (
-            <>
-              {/* Old checklist (simple ListGroup) */}
-              <h6 className="mb-3">Basic Checklist</h6>
-              <ListGroup className="mb-4">
-                {checklist.map((c, i) => (
-                  <ListGroup.Item key={i}>
-                    <Form.Check
-                      type="checkbox"
-                      label={c.label}
-                      checked={c.done}
-                      onChange={() => handleChecklistToggle(i)}
-                    />
-                  </ListGroup.Item>
-                ))}
-              </ListGroup>
-
-              {/* New category-wise checklist cards */}
-              <h6 className="mb-3">Detailed Checklist</h6>
-              <Checklist />
-            </>
-          )}
+      {activeTab === "checklist" && <Checklist/>}
+                 
 
 
           {activeTab === "activities" && (
