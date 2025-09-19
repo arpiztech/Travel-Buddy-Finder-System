@@ -6,11 +6,8 @@ import {
   Col,
   Card,
   Badge,
-  ListGroup,
   Button,
   ProgressBar,
-  Tab,
-  Form,
 } from "react-bootstrap";
 import { useParams, Link } from "react-router-dom";
 import {
@@ -38,7 +35,6 @@ import TripTimeline from "../components/TripTimeline";
 import BuddiesTab from "../components/BuddiesTab";
 import WeatherCard from "../components/WeatherCard";
 import Checklist from "../components/Checklist";
-
 
 // ------------------ helpers ------------------
 const statusFromDates = (start, end) => {
@@ -105,6 +101,9 @@ const ViewTrip = () => {
   const [trip, setTrip] = useState(null);
   const [activeTab, setActiveTab] = useState("overview");
 
+  // ✅ missing states added
+  const checklistKey = "trip-checklist";
+  const [checklist, setChecklist] = useState([]);
 
   const demoTrip = useMemo(
     () => ({
@@ -121,12 +120,29 @@ const ViewTrip = () => {
           day: 1,
           date: "2025-09-10",
           title: "Arrival & Seine Walk",
-          description: "Landing in Paris, hotel check-in, and evening walk along the Seine.",
+          description:
+            "Landing in Paris, hotel check-in, and evening walk along the Seine.",
           activities: [
-            { time: "10:00", name: "Arrive at CDG", icon: <FaPlane />, details: "Flight landing at Charles de Gaulle Airport", mapLink: "Charles de Gaulle Airport, Paris" },
-            { time: "12:00", name: "Hotel check-in", icon: <FaHotel />, details: "Check in at hotel near Eiffel Tower" },
-            { time: "18:00", name: "Evening walk", icon: <FaCloudSun />, details: "Walk along the Seine river at sunset" }
-          ]
+            {
+              time: "10:00",
+              name: "Arrive at CDG",
+              icon: <FaPlane />,
+              details: "Flight landing at Charles de Gaulle Airport",
+              mapLink: "Charles de Gaulle Airport, Paris",
+            },
+            {
+              time: "12:00",
+              name: "Hotel check-in",
+              icon: <FaHotel />,
+              details: "Check in at hotel near Eiffel Tower",
+            },
+            {
+              time: "18:00",
+              name: "Evening walk",
+              icon: <FaCloudSun />,
+              details: "Walk along the Seine river at sunset",
+            },
+          ],
         },
         {
           day: 2,
@@ -134,32 +150,28 @@ const ViewTrip = () => {
           title: "City Highlights",
           description: "Exploring Paris main attractions.",
           activities: [
-            { time: "09:00", name: "Eiffel Tower", icon: <FaMapMarkedAlt />, details: "Morning visit to Eiffel Tower", mapLink: "Eiffel Tower, Paris" },
-            { time: "11:00", name: "Louvre Museum", icon: <FaMapMarkedAlt />, details: "Explore world-famous art at Louvre", mapLink: "Louvre Museum, Paris" },
-            { time: "15:00", name: "Cafe hopping", icon: <FaCloudSun />, details: "Try Parisian coffee and pastries" }
-          ]
+            {
+              time: "09:00",
+              name: "Eiffel Tower",
+              icon: <FaMapMarkedAlt />,
+              details: "Morning visit to Eiffel Tower",
+              mapLink: "Eiffel Tower, Paris",
+            },
+            {
+              time: "11:00",
+              name: "Louvre Museum",
+              icon: <FaMapMarkedAlt />,
+              details: "Explore world-famous art at Louvre",
+              mapLink: "Louvre Museum, Paris",
+            },
+            {
+              time: "15:00",
+              name: "Cafe hopping",
+              icon: <FaCloudSun />,
+              details: "Try Parisian coffee and pastries",
+            },
+          ],
         },
-        {
-          day: 3,
-          date: "2025-09-12",
-          title: "Versailles Day Trip",
-          description: "A full-day trip to Versailles.",
-          activities: [
-            { time: "09:00", name: "Palace of Versailles", icon: <FaMapMarkedAlt />, details: "Tour the palace", mapLink: "Palace of Versailles" },
-            { time: "12:00", name: "Gardens", icon: <FaCloudSun />, details: "Walk through Versailles gardens" },
-            { time: "18:00", name: "Return to Paris", icon: <FaBus />, details: "Bus ride back to Paris" }
-          ]
-        },
-        {
-          day: 4,
-          date: "2025-09-13",
-          title: "Shopping & Departure",
-          description: "Last-minute shopping and departure.",
-          activities: [
-            { time: "10:00", name: "Le Marais shopping", icon: <FaBars />, details: "Shopping in Le Marais district" },
-            { time: "16:00", name: "Departure", icon: <FaPlane />, details: "Flight back home" }
-          ]
-        }
       ],
       activities: ["Culture", "Food", "Photography", "Shopping"],
       description: "Light itinerary with cafe time and evening walks.",
@@ -168,31 +180,30 @@ const ViewTrip = () => {
         { label: "Eiffel Tower", q: "Eiffel Tower, Paris" },
         { label: "Louvre Museum", q: "Louvre Museum, Paris" },
       ],
-     buddies: [
-  {
-    name: "Aarav",
-    status: "Joined",
-    avatar: "https://i.pravatar.cc/80?img=12",
-    role: "Leader",
-    interests: ["Photography", "Food"],
-    contributions: ["Booked Hotel", "Planned Itinerary"],
-    email: "aarav@example.com",
-    instagram: "aarav_travel",
-    whatsapp: "919876543210"
-  },
-  {
-    name: "Maya",
-    status: "Pending",
-    avatar: "https://i.pravatar.cc/80?img=32",
-    role: "Member",
-    interests: ["Shopping", "Culture"],
-    contributions: [],
-    email: "maya@example.com",
-    instagram: "maya_paris",
-    whatsapp: "919812345678"
-  }
-],
-
+      buddies: [
+        {
+          name: "Aarav",
+          status: "Joined",
+          avatar: "https://i.pravatar.cc/80?img=12",
+          role: "Leader",
+          interests: ["Photography", "Food"],
+          contributions: ["Booked Hotel", "Planned Itinerary"],
+          email: "aarav@example.com",
+          instagram: "aarav_travel",
+          whatsapp: "919876543210",
+        },
+        {
+          name: "Maya",
+          status: "Pending",
+          avatar: "https://i.pravatar.cc/80?img=32",
+          role: "Member",
+          interests: ["Shopping", "Culture"],
+          contributions: [],
+          email: "maya@example.com",
+          instagram: "maya_paris",
+          whatsapp: "919812345678",
+        },
+      ],
       weather: [
         { day: "Wed", type: "Sunny", temp: "27°C" },
         { day: "Thu", type: "Partly Cloudy", temp: "25°C" },
@@ -202,16 +213,18 @@ const ViewTrip = () => {
     []
   );
 
-
+  // load trip
   useEffect(() => {
     setTrip(demoTrip);
   }, [demoTrip]);
 
+  // ✅ load checklist from storage
   useEffect(() => {
     const saved = JSON.parse(localStorage.getItem(checklistKey));
     if (saved && Array.isArray(saved)) setChecklist(saved);
   }, [checklistKey]);
 
+  // ✅ save checklist to storage
   useEffect(() => {
     localStorage.setItem(checklistKey, JSON.stringify(checklist));
   }, [checklist, checklistKey]);
@@ -219,8 +232,11 @@ const ViewTrip = () => {
   if (!trip) return null;
   const status = statusFromDates(trip.startDate, trip.endDate);
 
+  // toggle checklist items
   const handleChecklistToggle = (idx) => {
-    setChecklist((prev) => prev.map((c, i) => (i === idx ? { ...c, done: !c.done } : c)));
+    setChecklist((prev) =>
+      prev.map((c, i) => (i === idx ? { ...c, done: !c.done } : c))
+    );
   };
 
   // Sidebar items
@@ -243,7 +259,9 @@ const ViewTrip = () => {
         {menu.map((item) => (
           <div
             key={item.key}
-            className={`sidebar-item ${activeTab === item.key ? "active" : ""}`}
+            className={`sidebar-item ${
+              activeTab === item.key ? "active" : ""
+            }`}
             onClick={() => setActiveTab(item.key)}
           >
             {item.icon} <span>{item.label}</span>
@@ -251,7 +269,9 @@ const ViewTrip = () => {
         ))}
         <div className="mt-auto small text-center">
           <Link to="/mytrip">
-            <Button variant="light" size="sm">← Back</Button>
+            <Button variant="light" size="sm">
+              ← Back
+            </Button>
           </Link>
         </div>
       </div>
@@ -276,49 +296,54 @@ const ViewTrip = () => {
               <Col md={6} className="text-center">
                 <h6>Budget</h6>
                 <Pie planned={trip.plannedSpend} budget={trip.budget} />
-                <div>₹{trip.plannedSpend} / ₹{trip.budget}</div>
+                <div>
+                  ₹{trip.plannedSpend} / ₹{trip.budget}
+                </div>
                 <ProgressBar now={(trip.plannedSpend / trip.budget) * 100} />
               </Col>
             </Row>
           )}
 
-         {activeTab === "timeline" && (
-  <TripTimeline itinerary={trip.itinerary} />
-)}
+          {activeTab === "timeline" && trip.itinerary && (
+            <TripTimeline itinerary={trip.itinerary} />
+          )}
 
-
-          {activeTab === "map" && (
-            trip.mapPins.map((p, i) => (
+          {activeTab === "map" &&
+            trip.mapPins?.map((p, i) => (
               <div className="ratio ratio-16x9 mb-3" key={i}>
                 <iframe
                   title={p.label}
-                  src={`https://www.google.com/maps?q=${encodeURIComponent(p.q)}&output=embed`}
+                  src={`https://www.google.com/maps?q=${encodeURIComponent(
+                    p.q
+                  )}&output=embed`}
                   style={{ border: 0 }}
                   allowFullScreen
                 />
               </div>
-            ))
+            ))}
+
+          {activeTab === "buddies" && trip.buddies && (
+            <BuddiesTab buddies={trip.buddies} />
           )}
 
-         {activeTab === "buddies" && (
-  <BuddiesTab buddies={trip.buddies} />
-)}
-{activeTab === "weather" && <WeatherCard />}
+          {activeTab === "weather" && <WeatherCard />}
 
-
-      {activeTab === "checklist" && <Checklist/>}
-                 
-
-
-          {activeTab === "activities" && (
-            trip.activities.map((a, i) => (
-              <Badge bg="info" key={i} className="me-2">{a}</Badge>
-            ))
+          {activeTab === "checklist" && (
+            <Checklist
+              checklist={checklist}
+              onToggle={handleChecklistToggle}
+              setChecklist={setChecklist}
+            />
           )}
 
-          {activeTab === "notes" && (
-            <p>{trip.description}</p>
-          )}
+          {activeTab === "activities" &&
+            trip.activities?.map((a, i) => (
+              <Badge bg="info" key={i} className="me-2">
+                {a}
+              </Badge>
+            ))}
+
+          {activeTab === "notes" && <p>{trip.description}</p>}
         </Card>
       </Container>
 
