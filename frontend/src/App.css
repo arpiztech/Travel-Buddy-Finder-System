@@ -1,0 +1,16 @@
+.activities-container {
+  display: flex; /* align sections horizontally */
+  gap: 50px; /* space between sections */
+}
+
+.activity-section {
+  background: #fff;
+  padding: 20px;
+  border-radius: 8px;
+  flex: 1; /* make both sections take equal width */
+  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+.activity-section h2 {
+  margin-bottom: 15px;
+}

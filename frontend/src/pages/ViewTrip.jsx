@@ -35,6 +35,7 @@ import TripTimeline from "../components/TripTimeline";
 import BuddiesTab from "../components/BuddiesTab";
 import WeatherCard from "../components/WeatherCard";
 import Checklist from "../components/Checklist";
+import Activities from "../components/Activities";
 
 // ------------------ helpers ------------------
 const statusFromDates = (start, end) => {
@@ -336,12 +337,7 @@ const ViewTrip = () => {
             />
           )}
 
-          {activeTab === "activities" &&
-            trip.activities?.map((a, i) => (
-              <Badge bg="info" key={i} className="me-2">
-                {a}
-              </Badge>
-            ))}
+         {activeTab === "activities" && <Activities />}
 
           {activeTab === "notes" && <p>{trip.description}</p>}
         </Card>
