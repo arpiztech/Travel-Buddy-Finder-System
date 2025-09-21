@@ -36,6 +36,8 @@ import BuddiesTab from "../components/BuddiesTab";
 import WeatherCard from "../components/WeatherCard";
 import Checklist from "../components/Checklist";
 import Activities from "../components/Activities";
+import Notes from "../components/Notes";
+
 
 // ------------------ helpers ------------------
 const statusFromDates = (start, end) => {
@@ -339,7 +341,7 @@ const ViewTrip = () => {
 
          {activeTab === "activities" && <Activities />}
 
-          {activeTab === "notes" && <p>{trip.description}</p>}
+          {activeTab === "notes" && <Notes />}
         </Card>
       </Container>
 
