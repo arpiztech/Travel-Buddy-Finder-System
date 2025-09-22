@@ -40,7 +40,7 @@ import Notes from "../components/Notes";
 
 
 // ------------------ helpers ------------------
-const statusFromDates = (start, end) => {
+const statusFromDates = (start, end) => { 
   const today = new Date();
   const s = new Date(start);
   const e = new Date(end);
