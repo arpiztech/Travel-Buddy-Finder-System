@@ -7,6 +7,7 @@ import Profile from "./pages/Profile";
 import MyTrip from "./pages/MyTrip";
 import ViewTrip from "./pages/ViewTrip";
 import CreateTrip from "./pages/CreateTrip";
+
 function App() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
 
