@@ -1,5 +1,5 @@
 // src/pages/ViewTrip.jsx
-import React, { useEffect, useMemo, useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Container,
   Row,
@@ -38,9 +38,33 @@ import Checklist from "../components/Checklist";
 import Activities from "../components/Activities";
 import Notes from "../components/Notes";
 
+// ------------------ mock demoTrip (fix for missing variable) ------------------
+const demoTrip = {
+  title: "Paris Adventure",
+  destination: "Paris, France",
+  startDate: "2025-09-01",
+  endDate: "2025-09-07",
+  travelMode: "Flight",
+  accommodation: "Hotel",
+  budget: 5000,
+  plannedSpend: 3200,
+  itinerary: [
+    { day: 1, activities: ["Arrival", "Check-in", "Dinner Cruise"] },
+    { day: 2, activities: ["Eiffel Tower", "Louvre Museum"] },
+    { day: 3, activities: ["Shopping", "Departure"] },
+  ],
+  mapPins: [
+    { label: "Airport", q: "Charles de Gaulle Airport" },
+    { label: "Hotel", q: "Eiffel Tower" },
+  ],
+  buddies: [
+    { name: "Alice", role: "Friend" },
+    { name: "John", role: "Colleague" },
+  ],
+};
 
 // ------------------ helpers ------------------
-const statusFromDates = (start, end) => { 
+const statusFromDates = (start, end) => {
   const today = new Date();
   const s = new Date(start);
   const e = new Date(end);
@@ -104,37 +128,34 @@ const ViewTrip = () => {
   const [trip, setTrip] = useState(null);
   const [activeTab, setActiveTab] = useState("overview");
 
-  // ✅ missing states added
   const checklistKey = "trip-checklist";
   const [checklist, setChecklist] = useState([]);
 
-  // load trip
+  // load trip (fix: demoTrip defined above)
   useEffect(() => {
     setTrip(demoTrip);
-  }, [demoTrip]);
+  }, []);
 
-  // ✅ load checklist from storage
+  // load checklist from storage
   useEffect(() => {
     const saved = JSON.parse(localStorage.getItem(checklistKey));
     if (saved && Array.isArray(saved)) setChecklist(saved);
   }, [checklistKey]);
 
-  // ✅ save checklist to storage
+  // save checklist to storage
   useEffect(() => {
     localStorage.setItem(checklistKey, JSON.stringify(checklist));
   }, [checklist, checklistKey]);
 
-  if (!trip) return null;
+  if (!trip) return <p style={{ padding: "20px" }}>Loading trip...</p>;
   const status = statusFromDates(trip.startDate, trip.endDate);
 
-  // toggle checklist items
   const handleChecklistToggle = (idx) => {
     setChecklist((prev) =>
       prev.map((c, i) => (i === idx ? { ...c, done: !c.done } : c))
     );
   };
 
-  // Sidebar items
   const menu = [
     { key: "overview", label: "Overview", icon: <FaInfoCircle /> },
     { key: "timeline", label: "Timeline", icon: <FaTasks /> },
@@ -231,8 +252,7 @@ const ViewTrip = () => {
             />
           )}
 
-         {activeTab === "activities" && <Activities />}
-
+          {activeTab === "activities" && <Activities />}
           {activeTab === "notes" && <Notes />}
         </Card>
       </Container>
