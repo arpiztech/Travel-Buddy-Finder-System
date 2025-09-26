@@ -37,6 +37,8 @@ import WeatherCard from "../components/WeatherCard";
 import Checklist from "../components/Checklist";
 import Activities from "../components/Activities";
 import Notes from "../components/Notes";
+import Overview from "../components/Overview";
+
 
 // ------------------ mock demoTrip (fix for missing variable) ------------------
 const demoTrip = {
@@ -201,24 +203,8 @@ const ViewTrip = () => {
         </p>
 
         <Card className="p-3">
-          {activeTab === "overview" && (
-            <Row>
-              <Col md={6}>
-                <h6>Travel</h6>
-                {travelIcons[trip.travelMode]} {trip.travelMode}
-                <br />
-                {stayIcons[trip.accommodation]} {trip.accommodation}
-              </Col>
-              <Col md={6} className="text-center">
-                <h6>Budget</h6>
-                <Pie planned={trip.plannedSpend} budget={trip.budget} />
-                <div>
-                  ₹{trip.plannedSpend} / ₹{trip.budget}
-                </div>
-                <ProgressBar now={(trip.plannedSpend / trip.budget) * 100} />
-              </Col>
-            </Row>
-          )}
+          {activeTab === "overview" && <Overview />}
+
 
           {activeTab === "timeline" && trip.itinerary && (
             <TripTimeline itinerary={trip.itinerary} />
