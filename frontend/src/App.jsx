@@ -7,6 +7,8 @@ import Profile from "./pages/Profile";
 import MyTrip from "./pages/MyTrip";
 import ViewTrip from "./pages/ViewTrip";
 import CreateTrip from "./pages/CreateTrip";
+import BuddyRequests from "./pages/BuddyRequests";
+import Message from "./pages/Message";
 
 function App() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -46,10 +48,20 @@ function App() {
       <Route path="/profile" element={<Profile />} />
 
       {/* Trips */}
-      <Route path="/viewtrip" element={<ViewTrip />} /> 
+      <Route path="/viewtrip" element={<ViewTrip />} />
       <Route path="/createtrip" element={<CreateTrip />} />
       <Route path="/trip" element={<MyTrip />} />
 
+      <Route
+        path="/buddy-request"
+        element={isAuthenticated ? <BuddyRequests /> : <Navigate to="/" />}
+      />
+
+      {/* Messages Sidebar Page */}
+      <Route
+        path="/messages"
+        element={isAuthenticated ? <Message /> : <Navigate to="/" />}
+      />
     </Routes>
   );
 }

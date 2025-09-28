@@ -41,7 +41,7 @@ const Overview = () => {
               <Card.Text>
                 ₹3200 / ₹5000 <br />
                 ₹9200 / ₹9000 <br />
-                
+
 
                 <ProgressBar now={64} label={`64%`} />
               </Card.Text>
@@ -70,11 +70,11 @@ const Overview = () => {
             <Card.Body>
               <FaUsers size={40} className="text-info mb-2" />
               <Card.Title>Buddies</Card.Title>
-                  <Card.Text>
-                    3 Buddies Joined <br />
-                    1 Pending Request <br/>
-                    on the way : 23 Sep
-                  </Card.Text>               
+              <Card.Text>
+                3 Buddies Joined <br />
+                1 Pending Request <br />
+                on the way : 23 Sep
+              </Card.Text>
             </Card.Body>
           </Card>
         </Col>
@@ -89,7 +89,7 @@ const Overview = () => {
                 ✅ Passport <br />
                 ✅ Tickets <br />
                 ☐ Camera <br />
-              
+
               </Card.Text>
             </Card.Body>
           </Card>
