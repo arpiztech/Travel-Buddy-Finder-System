@@ -39,7 +39,6 @@ import Activities from "../components/Activities";
 import Notes from "../components/Notes";
 import Overview from "../components/Overview";
 
-
 // ------------------ mock demoTrip (fix for missing variable) ------------------
 const demoTrip = {
   title: "Paris Adventure",
@@ -177,9 +176,7 @@ const ViewTrip = () => {
         {menu.map((item) => (
           <div
             key={item.key}
-            className={`sidebar-item ${
-              activeTab === item.key ? "active" : ""
-            }`}
+            className={`sidebar-item ${activeTab === item.key ? "active" : ""}`}
             onClick={() => setActiveTab(item.key)}
           >
             {item.icon} <span>{item.label}</span>
@@ -204,7 +201,6 @@ const ViewTrip = () => {
 
         <Card className="p-3">
           {activeTab === "overview" && <Overview />}
-
 
           {activeTab === "timeline" && trip.itinerary && (
             <TripTimeline itinerary={trip.itinerary} />

@@ -38,22 +38,33 @@ const Dashboard = () => {
           <Nav.Link
             as={NavLink}
             to="/viewtrip"
-            className="text-white fw-semibold"
+            className=" text-white fw-semibold"
           >
             📌 View Trip
           </Nav.Link>
-          <Link to="/buddy-request" className="btn btn-primary me-2">
+          <Nav.Link
+            as={Link}
+            to="/buddy-request"
+            className="text-white fw-semibold"
+          >
             🤝 Buddy Requests
-          </Link>
+          </Nav.Link>
 
-          <Link to="/messages" className="btn btn-primary me-2">
+          <Nav.Link as={Link} to="/messages" className="text-white fw-semibold">
             💬 Messages
-          </Link>
-
-          <Nav.Link className="text-white fw-semibold">
+          </Nav.Link>
+          <Nav.Link
+            as={Link}
+            to="/notifications"
+            className="text-white fw-semibold"
+          >
             🔔 Notifications
           </Nav.Link>
-          <Nav.Link className="text-white fw-semibold">⚙️ Settings</Nav.Link>
+
+          <Nav.Link as={Link} to="/settings" className="text-white fw-semibold">
+            ⚙️ Settings
+          </Nav.Link>
+
           <Nav.Link className="text-white fw-semibold">🚪 Logout</Nav.Link>
         </Nav>
       </div>
