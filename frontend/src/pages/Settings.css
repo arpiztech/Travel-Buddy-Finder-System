@@ -7,49 +7,34 @@
 .settings-main-container {
   min-height: 100vh;
   max-width: 100vw;
-   align-items: stretch; /* equal height for sidebar and content */
-  /* Only enable horizontal scroll when needed */
-  overflow-x: auto;
-  white-space: nowrap;
+  overflow-x: hidden;
 }
 
-
-
-/* Flex container to have equal height children */
 .settings-main-container > .row {
   display: flex;
-  align-items: stretch; /* equal height sidebar and content */
+  align-items: stretch;
   min-height: 100vh;
-  overflow-x: hidden; /* avoid horizontal scroll on row */
+  margin: 0;
+  width: 100%;
 }
 
 /* Sidebar styles */
 .settings-sidebar {
   background: #183153;
   color: #fff;
+   flex: 0 0 30%;   /* sidebar = 30% */
+  max-width: 30%;               /* takes 50% width */
   height: 100vh;
-  min-width: 260px;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
   padding: 24px 16px;
-  margin: 0;
-  box-shadow: 2px 0 10px -10px #0002;
   position: sticky;
-   overflow-y: auto; /* vertical scroll sidebar if content too tall */
-  flex-shrink: 0;  
   top: 0;
   z-index: 100;
-
-  /* Scroll horizontally if content is wider */
-  overflow-x: auto;
-  white-space: nowrap;
-
-  /* Scroll vertically if sidebar content is tall */
-  overflow-y: auto;
-
-  /* Prevent sidebar from shrinking */
-  flex-shrink: 0;
+  box-shadow: 2px 0 10px -10px #0002;
 }
 
-/* Sidebar header */
 .sidebar-title {
   font-weight: 700;
   font-size: 1.6rem;
@@ -58,7 +43,6 @@
   color: #fff;
 }
 
-/* Sidebar list item */
 .settings-list-item {
   font-size: 18px;
   font-weight: 500;
@@ -79,32 +63,25 @@
   font-weight: 700;
 }
 
-/* Content panel */
+/* Content styles */
 .settings-content-panel {
-  background: transparent;
-  min-height: 100vh;
-  width: 100%;
+   flex: 0 0 70%;   /* content = 70% */
+  max-width: 70%;               /* takes 50% width */
+  background: #fff;
+  height: 100vh;
+  overflow-y: auto;
   padding: 40px 50px;
   display: flex;
   flex-direction: column;
-  overflow-x: auto;  /* horizontal scroll on content if needed */
-  overflow-y: auto;  /* vertical scroll on content */
-  flex-grow: 1;
-  overflow-y: auto; /* vertical scroll content area */
-  background: #fff;
 }
 
-/* Content inside panel (forms, headings) */
 .settings-content {
   width: 100%;
-  min-height: 100vh;
+  flex: 1 1 0;
   background: #fff;
-  border-radius: 0;
-  box-shadow: none;
   padding: 52px 36px 0 36px;
 }
 
-/* Headings styling */
 .settings-content h2 {
   font-size: 2rem;
   font-weight: 700;
@@ -120,14 +97,10 @@
   margin-bottom: 6px;
 }
 
-/* Form control input fields */
+/* Inputs */
 .form-control {
   height: 34px !important;
   font-size: 0.94rem;
   padding: 5px 12px;
 }
 
-/* Lists inside content */
-.settings-content ul {
-  padding-left: 18px;
-}

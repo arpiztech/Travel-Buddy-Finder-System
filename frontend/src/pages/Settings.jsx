@@ -78,6 +78,7 @@ const Settings = () => {
                   style={{ maxWidth: 180, margin: "auto" }}
                 />
               </Form.Group>
+
               <Form.Group className="mb-2">
                 <Form.Label>📝 Edit Profile</Form.Label>
                 <Form.Control
@@ -114,9 +115,7 @@ const Settings = () => {
                 <Form.Label>🎂 Birthday</Form.Label>
                 <Form.Control type="date" size="sm" />
               </Form.Group>
-              <div className="d-flex justify-content-end mb-3">
-                <Button variant="danger">🗑️ Deactivate / Delete Account</Button>
-              </div>
+
               <div className="d-flex justify-content-center my-4">
                 <Button variant="primary" size="lg">
                   💾 Save Changes
@@ -150,6 +149,11 @@ const Settings = () => {
                 label="📍 Location Sharing"
                 className="mb-2"
               />
+              <Form.Check
+                type="switch"
+                label="🧰 Password Manager integration"
+                className="mb-2"
+              />
               <Form.Group className="mb-2">
                 <Form.Label>📧 Notification Email</Form.Label>
                 <Form.Control
@@ -158,16 +162,26 @@ const Settings = () => {
                   size="sm"
                 />
               </Form.Group>
-              <div className="mb-2">
-                <Form.Label>🛑 Blocked Users</Form.Label>
-                <div>
-                  {blockedUsers.map((user) => (
-                    <Badge bg="danger" key={user} style={{ marginRight: 7 }}>
-                      {user}
-                    </Badge>
-                  ))}
-                </div>
-              </div>
+              <Form.Group className="mb-2">
+                <Form.Label>📱 Recovery Phone Number</Form.Label>
+                <Form.Control
+                  type="tel"
+                  placeholder="+91-9876543210"
+                  size="sm"
+                />
+              </Form.Group>
+              <Form.Group className="mb-2">
+                <Form.Label>🛡️ Security Alerts</Form.Label>
+                <Form.Check
+                  type="checkbox"
+                  label="Alert on login from a new device"
+                />
+                <Form.Check
+                  type="checkbox"
+                  label="Alert if password is changed"
+                />
+              </Form.Group>
+
               <div className="d-flex justify-content-center my-4">
                 <Button variant="primary" size="lg">
                   💾 Save Changes
@@ -176,6 +190,7 @@ const Settings = () => {
             </Form>
           </div>
         );
+
       case "Travel Preferences":
         return (
           <div className="settings-content">

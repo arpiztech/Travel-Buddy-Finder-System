@@ -1,0 +1,55 @@
+.notification-card {
+  border-radius: 1.1rem;
+  transition: box-shadow 0.16s, border-color 0.16s, background 0.18s;
+  border: 2px solid #f8f8f8;
+  background: #fcfdff;
+}
+
+.notification-card.unread {
+  border-left: 4px solid #3684ff !important;
+  background: #f0f6ff;
+}
+
+.notification-card:hover {
+  box-shadow: 0 4px 18px #2357ba14;
+  background: #f7fbff;
+}
+
+.notification-type-icon {
+  display: inline-flex;
+  width: 36px;
+  height: 36px;
+  align-items: center;
+  justify-content: center;
+  border-radius: 100%;
+  font-size: 1.5rem;
+  margin-right: 10px;
+  background: #eaf3ff;
+  color: #245fd3;
+}
+
+.notification-actions button {
+  margin-right: 6px;
+}
+
+.notification-time {
+  font-size: 0.83rem;
+  color: #b0b0b0;
+  font-weight: 500;
+}
+
+.notification-message {
+  font-size: 1rem;
+  margin: 0;
+  color: #2b3649;
+}
+
+.notification-type {
+  font-size: 0.94rem;
+  font-weight: 600;
+  color: #245fd3;
+}
+
+.notifications-controls {
+  gap: 0.6rem;
+}
