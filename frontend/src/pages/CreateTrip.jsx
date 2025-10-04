@@ -20,6 +20,9 @@ const CreateTrip = () => {
     visibility: "public",
   });
 
+  // NEW: Added validated state for form validation
+  const [validated, setValidated] = useState(false);
+
   const activitiesOptions = [
     "Adventure",
     "Culture",
@@ -52,13 +55,24 @@ const CreateTrip = () => {
     }
   };
 
+  // UPDATED: handleSubmit with validation check
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    // 🔹 Save trip into localStorage
-    const storedTrips = JSON.parse(localStorage.getItem("trips")) || [];
+    const form = e.currentTarget;
+    if (form.checkValidity() === false) {
+      e.stopPropagation();
+      setValidated(true);
+      return;
+    }
+
+    // 🔹 Save trip into localStorage (now same key as MyTrip)
+    const storedTrips = JSON.parse(localStorage.getItem("tbf_trips")) || [];
     const newTrip = { ...trip, id: Date.now() }; // unique ID
-    localStorage.setItem("trips", JSON.stringify([...storedTrips, newTrip]));
+    localStorage.setItem(
+      "tbf_trips",
+      JSON.stringify([...storedTrips, newTrip])
+    );
 
     console.log("✅ Trip Created:", newTrip);
     alert("🎉 Trip Created Successfully!");
@@ -80,6 +94,9 @@ const CreateTrip = () => {
       languages: "",
       visibility: "public",
     });
+
+    // Reset validation state on success
+    setValidated(false);
   };
 
   return (
@@ -92,7 +109,9 @@ const CreateTrip = () => {
         }}
       >
         <h2 className="text-center mb-4">✈️ Create a New Trip</h2>
-        <Form onSubmit={handleSubmit}>
+
+        {/* UPDATED: Add noValidate and validated props here */}
+        <Form noValidate validated={validated} onSubmit={handleSubmit}>
           {/* Trip Title */}
           <Form.Group className="mb-3">
             <Form.Label>Trip Title</Form.Label>
@@ -104,6 +123,9 @@ const CreateTrip = () => {
               placeholder="E.g. Goa Beach Adventure"
               required
             />
+            <Form.Control.Feedback type="invalid">
+              Please enter a trip title.
+            </Form.Control.Feedback>
           </Form.Group>
 
           {/* Destination */}
@@ -117,6 +139,9 @@ const CreateTrip = () => {
               placeholder="Enter destination"
               required
             />
+            <Form.Control.Feedback type="invalid">
+              Please enter a destination.
+            </Form.Control.Feedback>
           </Form.Group>
 
           {/* Dates */}
@@ -129,7 +154,11 @@ const CreateTrip = () => {
                 value={trip.startDate}
                 onChange={handleChange}
                 required
+                isInvalid={validated && !trip.startDate}
               />
+              <Form.Control.Feedback type="invalid">
+                Please select a start date.
+              </Form.Control.Feedback>
             </Col>
             <Col>
               <Form.Label>End Date</Form.Label>
@@ -139,7 +168,11 @@ const CreateTrip = () => {
                 value={trip.endDate}
                 onChange={handleChange}
                 required
+                isInvalid={validated && !trip.endDate}
               />
+              <Form.Control.Feedback type="invalid">
+                Please select an end date.
+              </Form.Control.Feedback>
             </Col>
           </Row>
 
@@ -154,6 +187,9 @@ const CreateTrip = () => {
               placeholder="Enter budget"
               required
             />
+            <Form.Control.Feedback type="invalid">
+              Please enter a budget.
+            </Form.Control.Feedback>
           </Form.Group>
 
           {/* Travel Mode */}
@@ -171,6 +207,9 @@ const CreateTrip = () => {
               <option>Car</option>
               <option>Bus</option>
             </Form.Select>
+            <Form.Control.Feedback type="invalid">
+              Please select a travel mode.
+            </Form.Control.Feedback>
           </Form.Group>
 
           {/* Accommodation */}
@@ -188,6 +227,9 @@ const CreateTrip = () => {
               <option>Airbnb</option>
               <option>Camping</option>
             </Form.Select>
+            <Form.Control.Feedback type="invalid">
+              Please select an accommodation type.
+            </Form.Control.Feedback>
           </Form.Group>
 
           {/* Activities */}

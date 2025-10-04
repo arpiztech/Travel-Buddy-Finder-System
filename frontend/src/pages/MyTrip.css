@@ -1,0 +1,36 @@
+.mytrip-card {
+  transition: box-shadow 0.25s ease;
+  border-radius: 12px;
+}
+
+.mytrip-card:hover {
+  box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+}
+
+.mytrip-img {
+  border-radius: 12px 12px 0 0;
+  object-fit: cover;
+  height: 150px;
+}
+
+.progress-bar {
+  border-radius: 6px !important;
+  background-color: #3684FF !important;
+}
+
+.badge-info {
+  background-color: #3684FF !important;
+}
+
+.empty-state {
+  font-size: 1.25rem;
+  color: #777;
+  text-align: center;
+  margin: 3rem;
+}
+
+@media (max-width: 576px) {
+  .mytrip-card {
+    width: 100% !important;
+  }
+}

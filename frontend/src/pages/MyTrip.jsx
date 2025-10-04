@@ -68,6 +68,13 @@ const MyTrip = () => {
     setSelectedTrip(null);
   };
 
+  // Validation for Save button (destination/start/end must be filled)
+  const canSave =
+    selectedTrip &&
+    selectedTrip.destination?.trim() &&
+    selectedTrip.startDate &&
+    selectedTrip.endDate;
+
   // Filtered trips based on search
   const filteredTrips = trips.filter((t) =>
     t.destination.toLowerCase().includes(search.toLowerCase())
@@ -89,7 +96,20 @@ const MyTrip = () => {
 
       <div className="d-flex flex-wrap justify-content-center gap-4">
         {filteredTrips.length === 0 ? (
-          <p>No trips found. Please create one!</p>
+          <div
+            style={{
+              width: "100%",
+              textAlign: "center",
+              color: "#7d858d",
+              fontSize: 18,
+              marginTop: 40,
+            }}
+          >
+            <b>No trips found.</b>
+            <div style={{ fontSize: 15, marginTop: 8, color: "#b0b5bb" }}>
+              Create your first trip to get started!
+            </div>
+          </div>
         ) : (
           filteredTrips.map((t, i) => {
             const status = getTripStatus(t.startDate, t.endDate);
@@ -98,13 +118,47 @@ const MyTrip = () => {
                 key={i}
                 style={{
                   width: "20rem",
-                  boxShadow: "0 4px 10px rgba(0,0,0,0.2)",
+                  boxShadow: "0 4px 18px 2px #e2eafc55",
+                  border: "none",
+                  borderRadius: "12px",
                 }}
+                className="mytrip-card"
               >
-                {t.image && <Card.Img variant="top" src={t.image} />}
+                {t.image ? (
+                  <Card.Img
+                    variant="top"
+                    src={t.image}
+                    className="mytrip-img"
+                  />
+                ) : (
+                  <div
+                    style={{
+                      height: "150px",
+                      display: "flex",
+                      justifyContent: "center",
+                      alignItems: "center",
+                      background: "#e3e6ea",
+                      color: "#9ba7b6",
+                      fontSize: "1rem",
+                      borderRadius: "12px 12px 0 0",
+                    }}
+                  >
+                    No image available
+                  </div>
+                )}
                 <Card.Body>
                   <Card.Title className="d-flex justify-content-between align-items-center">
-                    {t.destination}
+                    <span
+                      style={{
+                        whiteSpace: "nowrap",
+                        overflow: "hidden",
+                        textOverflow: "ellipsis",
+                        maxWidth: 135,
+                        display: "inline-block",
+                      }}
+                    >
+                      {t.destination}
+                    </span>
                     <Badge
                       bg={
                         status === "Upcoming"
@@ -119,13 +173,24 @@ const MyTrip = () => {
                       {status}
                     </Badge>
                   </Card.Title>
-                  <Card.Text>
+                  <Card.Text style={{ fontSize: "0.96rem" }}>
                     <b>Dates:</b> {t.startDate} → {t.endDate} <br />
                     <b>Budget:</b> ${t.budget} <br />
                     <b>Mode:</b> {travelIcons[t.travelMode]} {t.travelMode}{" "}
                     <br />
                     <b>Stay:</b> {accommodationIcons[t.accommodation]}{" "}
                     {t.accommodation}
+                    <br />
+                    <b>Activities:</b>{" "}
+                    {t.activities && t.activities.length > 0 ? (
+                      t.activities.map((act, k) => (
+                        <Badge key={k} bg="info" className="me-1">
+                          {act}
+                        </Badge>
+                      ))
+                    ) : (
+                      <span style={{ color: "#bbb" }}>None</span>
+                    )}
                   </Card.Text>
                   <div className="d-flex justify-content-between">
                     <Button
@@ -176,7 +241,7 @@ const MyTrip = () => {
           </Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          {selectedTrip?.image && (
+          {selectedTrip?.image ? (
             <img
               src={selectedTrip.image}
               alt="trip"
@@ -184,8 +249,27 @@ const MyTrip = () => {
                 width: "100%",
                 borderRadius: "8px",
                 marginBottom: "20px",
+                maxHeight: 240,
+                objectFit: "cover",
               }}
             />
+          ) : (
+            <div
+              style={{
+                width: "100%",
+                height: 180,
+                backgroundColor: "#e3e6ea",
+                borderRadius: 8,
+                marginBottom: 20,
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                color: "#aaa",
+                fontSize: 17,
+              }}
+            >
+              No image available
+            </div>
           )}
 
           {editIndex !== null ? (
@@ -195,6 +279,7 @@ const MyTrip = () => {
                 <Form.Control
                   type="text"
                   value={selectedTrip.destination}
+                  isInvalid={!selectedTrip.destination}
                   onChange={(e) =>
                     setSelectedTrip({
                       ...selectedTrip,
@@ -202,6 +287,9 @@ const MyTrip = () => {
                     })
                   }
                 />
+                <Form.Control.Feedback type="invalid">
+                  Destination is required
+                </Form.Control.Feedback>
               </Form.Group>
 
               <Form.Group className="mb-3 d-flex gap-3">
@@ -210,6 +298,7 @@ const MyTrip = () => {
                   <Form.Control
                     type="date"
                     value={selectedTrip.startDate}
+                    isInvalid={!selectedTrip.startDate}
                     onChange={(e) =>
                       setSelectedTrip({
                         ...selectedTrip,
@@ -217,12 +306,16 @@ const MyTrip = () => {
                       })
                     }
                   />
+                  <Form.Control.Feedback type="invalid">
+                    Start date is required
+                  </Form.Control.Feedback>
                 </div>
                 <div className="flex-fill">
                   <Form.Label>End Date</Form.Label>
                   <Form.Control
                     type="date"
                     value={selectedTrip.endDate}
+                    isInvalid={!selectedTrip.endDate}
                     onChange={(e) =>
                       setSelectedTrip({
                         ...selectedTrip,
@@ -230,6 +323,9 @@ const MyTrip = () => {
                       })
                     }
                   />
+                  <Form.Control.Feedback type="invalid">
+                    End date is required
+                  </Form.Control.Feedback>
                 </div>
               </Form.Group>
 
@@ -284,7 +380,16 @@ const MyTrip = () => {
                 {selectedTrip?.accommodation}
               </p>
               <p>
-                <b>Activities:</b> {selectedTrip?.activities.join(", ")}
+                <b>Activities:</b>{" "}
+                {selectedTrip?.activities?.length > 0 ? (
+                  selectedTrip.activities.map((act, k) => (
+                    <Badge key={k} bg="info" className="me-1">
+                      {act}
+                    </Badge>
+                  ))
+                ) : (
+                  <span style={{ color: "#bbb" }}>None</span>
+                )}
               </p>
               <p>
                 <b>Description:</b> {selectedTrip?.description}
@@ -294,14 +399,15 @@ const MyTrip = () => {
         </Modal.Body>
         <Modal.Footer>
           {editIndex !== null ? (
-            <Button variant="success" onClick={handleEditSave}>
+            <Button
+              variant="success"
+              onClick={handleEditSave}
+              disabled={!canSave}
+            >
               Save Changes
             </Button>
           ) : (
-            <Button
-              variant="secondary"
-              onClick={() => setSelectedTrip(null)}
-            >
+            <Button variant="secondary" onClick={() => setSelectedTrip(null)}>
               Close
             </Button>
           )}
