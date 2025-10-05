@@ -1,6 +1,7 @@
 // src/pages/CreateTrip.jsx
 import React, { useState } from "react";
 import { Form, Button, Card, Row, Col } from "react-bootstrap";
+import "./CreateTrip.css"; // add at the top, same folder
 
 const CreateTrip = () => {
   const [trip, setTrip] = useState({
