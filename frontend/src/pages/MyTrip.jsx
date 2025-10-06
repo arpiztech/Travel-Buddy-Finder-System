@@ -10,6 +10,7 @@ import {
   FaCampground,
   FaBed,
 } from "react-icons/fa";
+import "./MyTrip.css";
 
 // Helper to check trip status based on dates
 const getTripStatus = (startDate, endDate) => {
@@ -81,7 +82,7 @@ const MyTrip = () => {
   );
 
   return (
-    <div className="d-flex flex-column align-items-center mt-5 w-100 px-3">
+    <div className="MyTrip-bg d-flex flex-column align-items-center mt-5 w-100 px-3">
       <h2 className="mb-4">📌 My Trips</h2>
 
       {/* Search bar */}
@@ -122,13 +123,13 @@ const MyTrip = () => {
                   border: "none",
                   borderRadius: "12px",
                 }}
-                className="mytrip-card"
+                className="MyTrip-card"
               >
                 {t.image ? (
                   <Card.Img
                     variant="top"
                     src={t.image}
-                    className="mytrip-img"
+                    className="MyTrip-img"
                   />
                 ) : (
                   <div

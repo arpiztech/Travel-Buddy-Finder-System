@@ -1,36 +1,176 @@
-.mytrip-card {
-  transition: box-shadow 0.25s ease;
-  border-radius: 12px;
+/* ====== Background and Layout ====== */
+.mytrip-bg {
+  min-height: 100vh;
+  background: linear-gradient(110deg, #e8effe 0%, #e3e8fa 55%, #f8fcff 100%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding-top: 48px;
+  font-family: 'Poppins', 'Segoe UI', Arial, sans-serif;
 }
 
+/* ====== Title ====== */
+h2.mb-4 {
+  font-size: 2.2rem;
+  font-weight: bold;
+  letter-spacing: 1px;
+  color: #205cd7;
+  text-shadow: 0 1.5px 0 rgba(255,255,255,0.5);
+  margin-bottom: 36px !important;
+}
+
+/* ====== Search ====== */
+form.mb-4.w-50 .form-control {
+  border-radius: 14px;
+  font-size: 1.06rem;
+  padding: 12px;
+  background: #f3f7fa;
+  border: 1.5px solid #b8caff;
+  box-shadow: 0px 1px 8px #d3e2fd44;
+}
+
+/* ====== Cards Container ====== */
+.d-flex.flex-wrap.justify-content-center.gap-4 {
+  gap: 2rem !important;
+}
+
+/* ====== Card Styling ====== */
+.mytrip-card,
+.d-flex.flex-wrap.justify-content-center.gap-4 .card {
+  border: none;
+  border-radius: 17px;
+  box-shadow: 0 8px 32px -9px #0A297822;
+  background: #ffffff;
+  transition: box-shadow 0.22s, transform 0.14s;
+}
 .mytrip-card:hover {
-  box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+  box-shadow: 0 16px 44px -16px #245ffb2f;
+  transform: translateY(-4px) scale(1.02);
 }
 
-.mytrip-img {
-  border-radius: 12px 12px 0 0;
+/* ====== Card Image ====== */
+.mytrip-img,
+img[alt="trip"] {
+  border-radius: 17px 17px 0 0;
+  height: 180px;
   object-fit: cover;
-  height: 150px;
+  background: #e7ecef;
 }
 
-.progress-bar {
-  border-radius: 6px !important;
-  background-color: #3684FF !important;
+/* ====== Card Title and Badge ====== */
+.card-title {
+  font-weight: 700;
+  color: #273648;
+  font-size: 1.18rem;
+  letter-spacing: 0.02rem;
+}
+.card-title .badge {
+  font-size: 0.98rem;
+  padding: 0.33em 0.8em;
+  font-weight: 600;
+  border-radius: 20px;
+  box-shadow: 0 1px 4px #12408223;
+  margin-left: 7px;
 }
 
-.badge-info {
-  background-color: #3684FF !important;
+/* ====== Card Text ====== */
+.card-text {
+  color: #41556b;
+  font-size: 1.025rem;
+  line-height: 1.55;
 }
 
-.empty-state {
-  font-size: 1.25rem;
-  color: #777;
+/* ====== Button Row ====== */
+.d-flex.justify-content-between {
+  margin-top: 18px;
+  gap: 0.95em;
+}
+.btn-outline-info, .btn-outline-warning, .btn-outline-danger {
+  border-radius: 11px;
+  font-size: 1rem;
+  font-weight: 600;
+  letter-spacing: 0.01em;
+  transition: background 0.18s, color 0.17s, border-color 0.17s;
+  box-shadow: none;
+}
+.btn-outline-info:hover {
+  background: #e3f0ff;
+  color: #1764ad !important;
+  border-color: #1764ad;
+}
+.btn-outline-warning:hover {
+  background: #fffbe5;
+  color: #967f17 !important;
+  border-color: #e0a700;
+}
+.btn-outline-danger:hover {
+  background: #ffe9ec;
+  color: #bb2244 !important;
+  border-color: #bb2244;
+}
+
+/* ====== Modal Styling ====== */
+.modal-content {
+  border-radius: 16px !important;
+  padding: 7px 0 0 0;
+  background: #fcfdff !important;
+  box-shadow: 0 3px 38px 4px #345ff42a;
+}
+.modal-title {
+  font-weight: 750;
+  font-size: 1.22rem;
+  color: #155abe;
+}
+
+/* ====== Badges for Activities ====== */
+.badge.bg-info.me-1,
+.badge.bg-info {
+  background: linear-gradient(90deg,#49c3ff 0%, #0071fc 100%);
+  color: #fff;
+  font-size: 0.93rem;
+  font-weight: 600;
+  border-radius: 7px;
+  margin-bottom: 2px;
+  margin-right: 5px;
+  box-shadow: 0 2px 12px #2876cc2d;
+}
+
+/* ====== Empty Trip Message ====== */
+.mytrip-empty-state {
+  width: 100%;
   text-align: center;
-  margin: 3rem;
+  color: #3b4b5c;
+  font-size: 1.22rem;
+  margin-top: 55px;
+  letter-spacing: 0.01rem;
+}
+.mytrip-empty-state div {
+  font-size: 1.07rem;
+  margin-top: 8px;
+  color: #6b7f98;
 }
 
-@media (max-width: 576px) {
+/* ====== Responsive Adjustments ====== */
+@media (max-width: 992px) {
   .mytrip-card {
-    width: 100% !important;
+    width: 92% !important;
+  }
+  .d-flex.flex-wrap.justify-content-center.gap-4 .card {
+    width: 88% !important;
+  }
+}
+@media (max-width: 680px) {
+  .mytrip-card {
+    width: 99% !important;
+    min-width: 98vw !important;
+    padding: 0 1.7rem !important;
+  }
+  .d-flex.flex-wrap.justify-content-center.gap-4 .card {
+    width: 99% !important;
+    min-width: 97vw !important;
+    padding: 0 1.2rem !important;
+  }
+  form.mb-4.w-50 {
+    width: 96% !important;
   }
 }

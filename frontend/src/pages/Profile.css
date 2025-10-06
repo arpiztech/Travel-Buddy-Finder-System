@@ -1,0 +1,75 @@
+/* ===== Page Background ===== */
+.profile-page {
+  min-height: 100vh;
+  padding: 50px;
+  background: linear-gradient(110deg, #eef4ff 0%, #cbdcf8 100%);
+  font-family: "Poppins", sans-serif;
+}
+
+/* ===== Card Styling ===== */
+.profile-card {
+  background: linear-gradient(135deg, #5fb0ea, rgba(192, 187, 230, 1));
+  border: none;
+  border-radius: 20px;
+  padding: 40px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.15);
+  color: white;
+  transition: 0.3s ease;
+}
+
+.profile-card:hover {
+  transform: translateY(-4px);
+}
+
+/* ===== Title ===== */
+.profile-title {
+  font-size: 2rem;
+  font-weight: 700;
+  text-align: center;
+  margin-bottom: 25px;
+  color: #ffffff;
+}
+
+/* ===== Profile Picture ===== */
+.profile-picture-section {
+  text-align: center;
+  margin-bottom: 25px;
+}
+
+.profile-picture {
+  border-radius: 50%;
+  width: 120px;
+  height: 120px;
+  object-fit: cover;
+  border: 3px solid white;
+  margin-bottom: 10px;
+}
+
+/* ===== Section Headings ===== */
+.section-heading {
+  color: #fff;
+  font-weight: 600;
+  margin-top: 25px;
+  border-left: 4px solid #fff;
+  padding-left: 10px;
+}
+
+/* ===== Buttons ===== */
+.profile-buttons {
+  text-align: center;
+  margin-top: 30px;
+}
+
+.btn-save {
+  border-radius: 30px;
+  padding: 10px 35px;
+  font-weight: 600;
+  color: #333 !important;
+  margin-right: 10px;
+}
+
+.btn-delete {
+  border-radius: 30px;
+  padding: 10px 35px;
+  font-weight: 600;
+}

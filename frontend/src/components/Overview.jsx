@@ -41,8 +41,6 @@ const Overview = () => {
               <Card.Text>
                 ₹3200 / ₹5000 <br />
                 ₹9200 / ₹9000 <br />
-
-
                 <ProgressBar now={64} label={`64%`} />
               </Card.Text>
             </Card.Body>
@@ -56,8 +54,10 @@ const Overview = () => {
               <FaHotel size={40} className="text-warning mb-2" />
               <Card.Title>Travel Details</Card.Title>
               <Card.Text>
-                Flight: AI-202<br />
-                Hotel: Hilton Paris<br />
+                Flight: AI-202
+                <br />
+                Hotel: Hilton Paris
+                <br />
                 Check-in: 12 Aug
               </Card.Text>
             </Card.Body>
@@ -89,7 +89,6 @@ const Overview = () => {
                 ✅ Passport <br />
                 ✅ Tickets <br />
                 ☐ Camera <br />
-
               </Card.Text>
             </Card.Body>
           </Card>

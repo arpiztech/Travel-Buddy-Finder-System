@@ -22,7 +22,8 @@ const Profile = () => {
           <Card
             className="p-4 shadow-lg border-0 rounded-4"
             style={{
-              background: "linear-gradient(135deg, #5fb0ea, rgba(192, 187, 230, 1))", // 🎨 Gradient only for box
+              background:
+                "linear-gradient(135deg, #5fb0ea, rgba(192, 187, 230, 1))", // 🎨 Gradient only for box
               color: "white",
             }}
           >
