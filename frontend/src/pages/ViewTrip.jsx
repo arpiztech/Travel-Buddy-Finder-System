@@ -206,19 +206,81 @@ const ViewTrip = () => {
             <TripTimeline itinerary={trip.itinerary} />
           )}
 
-          {activeTab === "map" &&
-            trip.mapPins?.map((p, i) => (
-              <div className="ratio ratio-16x9 mb-3" key={i}>
-                <iframe
-                  title={p.label}
-                  src={`https://www.google.com/maps?q=${encodeURIComponent(
-                    p.q
-                  )}&output=embed`}
-                  style={{ border: 0 }}
-                  allowFullScreen
-                />
+          {activeTab === "map" && trip.mapPins && trip.mapPins.length > 0 && (
+            <div className="map-section">
+              <h5 className="mb-3">📍 Trip Locations</h5>
+              <div className="map-grid">
+                {trip.mapPins.map((p, i) => (
+                  <div key={i} className="map-card">
+                    <h6>{p.label}</h6>
+                    <div className="map-preview">
+                      <iframe
+                        title={p.label}
+                        src={`https://www.google.com/maps?q=${encodeURIComponent(
+                          p.q
+                        )}&output=embed`}
+                        loading="lazy"
+                        style={{ border: 0 }}
+                        allowFullScreen
+                      />
+                    </div>
+                    <a
+                      href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(
+                        p.q
+                      )}`}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="view-link"
+                    >
+                      View on Google Maps →
+                    </a>
+                  </div>
+                ))}
               </div>
-            ))}
+
+              <style jsx>{`
+                .map-section {
+                  display: flex;
+                  flex-direction: column;
+                }
+                .map-grid {
+                  display: grid;
+                  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+                  gap: 20px;
+                }
+                .map-card {
+                  background: #f8f9fa;
+                  border-radius: 12px;
+                  padding: 15px;
+                  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+                  transition: transform 0.2s ease, box-shadow 0.2s ease;
+                }
+                .map-card:hover {
+                  transform: translateY(-4px);
+                  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+                }
+                .map-preview {
+                  border-radius: 10px;
+                  overflow: hidden;
+                  aspect-ratio: 16 / 9;
+                  margin-bottom: 10px;
+                }
+                .map-preview iframe {
+                  width: 100%;
+                  height: 100%;
+                }
+                .view-link {
+                  color: #0d6efd;
+                  font-weight: 500;
+                  text-decoration: none;
+                  font-size: 0.9rem;
+                }
+                .view-link:hover {
+                  text-decoration: underline;
+                }
+              `}</style>
+            </div>
+          )}
 
           {activeTab === "buddies" && trip.buddies && (
             <BuddiesTab buddies={trip.buddies} />
