@@ -11,6 +11,8 @@ import BuddyRequests from "./pages/BuddyRequests";
 import Message from "./pages/Message";
 import Notifications from "./pages/Notifications";
 import Settings from "./pages/Settings";
+import Logout from "./pages/Logout";
+
 function App() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
 
@@ -27,6 +29,8 @@ function App() {
           )
         }
       />
+      {/*LogOut*/}
+      <Route path="/logout" element={<Logout />} />
 
       {/* Signup page */}
       <Route
@@ -71,6 +75,13 @@ function App() {
         path="/settings"
         element={isAuthenticated ? <Settings /> : <Navigate to="/" />}
       />
+      {/* ✅ Logout Route (fixed) */}
+      <Route
+        path="/logout"
+        element={<Logout onLogout={() => setIsAuthenticated(false)} />}
+      />
+      {/* ✅ Catch-all route */}
+      <Route path="*" element={<Navigate to="/" replace />} />
     </Routes>
   );
 }
