@@ -70,70 +70,78 @@ const Dashboard = () => {
       </div>
 
       {/* Main Dashboard Content */}
+      {/* Main Dashboard Content */}
       <Container
         fluid
         className="p-4"
         style={{
-          background: "linear-gradient(135deg, #e0f7fa, #e1bee7)",
+          background: "linear-gradient(135deg, #e0f7fa 0%, #e1bee7 100%)",
           minHeight: "100vh",
         }}
       >
-        <h2 className="fw-bold text-dark">Welcome back, Arpita! 👋</h2>
-        <p className="text-muted">Here’s what’s happening with your travels.</p>
+        <h2 className="fw-bold text-dark mb-1">Welcome back, Arpita! 👋</h2>
+        <p className="text-muted mb-4">
+          Stay updated on your recent travel activities.
+        </p>
 
         {/* Quick Stats */}
-        <Row className="mt-4 g-4">
+        <Row className="mt-3 g-4">
           <Col md={3}>
-            <Card className="p-3 shadow-lg border-0 rounded-4">
-              <h5>Total Trips</h5>
-              <p className="fs-4 fw-bold text-primary">6</p>
+            <Card className="p-3 shadow border-0 rounded-4 bg-white h-100">
+              <h6 className="text-secondary mb-1">Total Trips</h6>
+              <span className="fs-3 fw-semibold text-primary">6</span>
             </Card>
           </Col>
           <Col md={3}>
-            <Card className="p-3 shadow-lg border-0 rounded-4">
-              <h5>Upcoming Trips</h5>
-              <p className="fs-4 fw-bold text-success">2</p>
+            <Card className="p-3 shadow border-0 rounded-4 bg-white h-100">
+              <h6 className="text-secondary mb-1">Upcoming Trips</h6>
+              <span className="fs-3 fw-semibold text-success">2</span>
             </Card>
           </Col>
           <Col md={3}>
-            <Card className="p-3 shadow-lg border-0 rounded-4">
-              <h5>Buddy Matches</h5>
-              <p className="fs-4 fw-bold text-warning">4</p>
+            <Card className="p-3 shadow border-0 rounded-4 bg-white h-100">
+              <h6 className="text-secondary mb-1">Buddy Matches</h6>
+              <span className="fs-3 fw-semibold text-warning">4</span>
             </Card>
           </Col>
           <Col md={3}>
-            <Card className="p-3 shadow-lg border-0 rounded-4">
-              <h5>Pending Requests</h5>
-              <p className="fs-4 fw-bold text-danger">1</p>
+            <Card className="p-3 shadow border-0 rounded-4 bg-white h-100">
+              <h6 className="text-secondary mb-1">Pending Requests</h6>
+              <span className="fs-3 fw-semibold text-danger">1</span>
             </Card>
           </Col>
         </Row>
 
         {/* Upcoming Trips */}
-        <div className="mt-5">
-          <h4 className="fw-bold text-dark">🌍 Upcoming Trips</h4>
-          <Card className="p-3 mt-3 shadow-sm border-0 rounded-4">
-            <h6 className="fw-bold">Paris, France</h6>
-            <p className="text-muted mb-2">
-              12th - 18th Sept 2025 | Budget: $800
-            </p>
-            <Button variant="primary" className="rounded-pill px-4">
-              View Details
-            </Button>
+        <section className="mt-5">
+          <h4 className="fw-bold text-dark mb-3">🌍 Upcoming Trips</h4>
+          <Card className="p-3 shadow-sm border-0 rounded-4 bg-light">
+            <div className="d-flex justify-content-between align-items-center">
+              <div>
+                <h6 className="fw-bold mb-1">Paris, France</h6>
+                <p className="text-muted mb-2">
+                  12th - 18th Sept 2025&nbsp;|&nbsp;
+                  <span className="fw-semibold">Budget: $800</span>
+                </p>
+              </div>
+              <Button variant="primary" className="rounded-pill px-4">
+                View Details
+              </Button>
+            </div>
           </Card>
-        </div>
+        </section>
 
         {/* Buddy Requests */}
-        <div className="mt-5">
-          <h4 className="fw-bold text-dark">🤝 Buddy Requests</h4>
-          <Card className="p-3 mt-3 shadow-sm border-0 rounded-4 d-flex flex-row justify-content-between align-items-center">
+        <section className="mt-5">
+          <h4 className="fw-bold text-dark mb-3">🤝 Buddy Requests</h4>
+          <Card className="p-3 shadow-sm border-0 rounded-4 bg-light d-flex flex-row justify-content-between align-items-center">
             <div>
-              <h6 className="fw-bold">John Doe</h6>
+              <h6 className="fw-bold mb-1">John Doe</h6>
               <p className="text-muted mb-0">
-                Wants to join your trip to Paris ✈️
+                Wants to join your trip to Paris&nbsp;✈️
               </p>
             </div>
-            <div>
+            <div className="d-flex">
               <Button variant="success" className="me-2 rounded-pill px-3">
                 Accept
               </Button>
@@ -142,7 +150,7 @@ const Dashboard = () => {
               </Button>
             </div>
           </Card>
-        </div>
+        </section>
       </Container>
     </div>
   );
