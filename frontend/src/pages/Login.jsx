@@ -5,14 +5,17 @@ import "bootstrap/dist/css/bootstrap.min.css";
 export default function Login({ setIsAuthenticated }) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [message, setMessage] = useState(""); // ✅ for showing auth feedback
 
   const handleLogin = (e) => {
     e.preventDefault();
+
     if (email && password) {
-      // Dummy login (replace with backend later)
+      // ✅ Dummy login logic (simulate success)
       setIsAuthenticated(true);
+      setMessage("✅ Authentication successful! You are now logged in.");
     } else {
-      alert("Please enter email and password");
+      setMessage("❌ Please enter both email and password.");
     }
   };
 
@@ -20,6 +23,18 @@ export default function Login({ setIsAuthenticated }) {
     <div className="d-flex align-items-center justify-content-center vh-100 bg-light">
       <div className="card shadow-lg p-4" style={{ width: "400px" }}>
         <h3 className="text-center mb-3">🔑 Login</h3>
+
+        {/* ✅ Authentication Message */}
+        {message && (
+          <div
+            className={`alert ${
+              message.includes("successful") ? "alert-success" : "alert-danger"
+            } text-center py-2`}
+          >
+            {message}
+          </div>
+        )}
+
         <form onSubmit={handleLogin}>
           <div className="mb-3">
             <label className="form-label">Email address</label>
@@ -47,6 +62,7 @@ export default function Login({ setIsAuthenticated }) {
             Login
           </button>
         </form>
+
         <p className="text-center mt-3 mb-0">
           Don’t have an account? <Link to="/signup">Sign Up</Link>
         </p>
