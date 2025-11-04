@@ -105,8 +105,12 @@ const Dashboard = () => {
             <br /> explore beautiful world!
           </h3>
           <p className="text-muted mb-4">
-            Plan and book your perfect trip with expert advice, travel tips,
-            destination information and inspiration from us!
+            In today’s digital era, the growing enthusiasm for travel and
+            exploration has highlighted the need for intelligent systems that
+            can connect individuals with similar travel interests. The Travel
+            Buddy Finder System aims to bridge this gap by providing a smart
+            platform that matches travelers based on destination, preferences,
+            and timelines.
           </p>
           <div className="d-flex gap-3">
             <Button variant="primary" className="rounded-pill px-4 py-2">
