@@ -12,6 +12,7 @@ import Message from "./pages/Message";
 import Notifications from "./pages/Notifications";
 import Settings from "./pages/Settings";
 import Logout from "./pages/Logout";
+import About from "./pages/About"; // <-- Import About
 
 function App() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -51,6 +52,8 @@ function App() {
       />
 
       <Route path="/profile" element={<Profile />} />
+      {/* ✅ About Page */}
+      <Route path="/about" element={<About />} />
 
       {/* Trips */}
       <Route path="/viewtrip" element={<ViewTrip />} />
@@ -75,11 +78,13 @@ function App() {
         path="/settings"
         element={isAuthenticated ? <Settings /> : <Navigate to="/" />}
       />
+
       {/* ✅ Logout Route (fixed) */}
       <Route
         path="/logout"
         element={<Logout onLogout={() => setIsAuthenticated(false)} />}
       />
+
       {/* ✅ Catch-all route */}
       <Route path="*" element={<Navigate to="/" replace />} />
     </Routes>
