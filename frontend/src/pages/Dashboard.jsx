@@ -1,14 +1,17 @@
 import React from "react";
-import { Container, Button, Card, Nav } from "react-bootstrap";
-import { Link, NavLink } from "react-router-dom";
+import { Button, Card, Nav } from "react-bootstrap";
+import { Link } from "react-router-dom";
 
 const Dashboard = () => {
   return (
     <div
-      className="d-flex"
+      className="d-flex position-fixed top-0 start-0 w-100"
       style={{
         height: "100vh",
-        overflow: "hidden", // prevent double scrollbars
+        width: "100vw",
+        margin: 0,
+        padding: 0,
+        overflow: "hidden",
       }}
     >
       {/* Sidebar */}
@@ -34,7 +37,7 @@ const Dashboard = () => {
               to="/profile"
               className="text-white fw-semibold"
             >
-              🧑 My Profile
+              👤 My Profile
             </Nav.Link>
             <Nav.Link as={Link} to="/trip" className="text-white fw-semibold">
               ✈️ My Trips
@@ -89,21 +92,22 @@ const Dashboard = () => {
         </div>
       </div>
 
-      {/* Main Dashboard Content */}
+      {/* Main Dashboard Section */}
       <div
         className="flex-grow-1 d-flex align-items-center justify-content-between p-5"
         style={{
           background: "linear-gradient(135deg, #b3e5fc 0%, #e1bee7 100%)",
+          height: "100%",
           overflowY: "auto",
         }}
       >
-        {/* Left Section */}
+        {/* Left Content */}
         <div style={{ maxWidth: "550px" }}>
           <h1 className="fw-bold text-dark mb-3">Hey Arpita</h1>
           <h3 className="fw-bold text-dark mb-3">
-            Start your journey by one click,
-            <br /> explore beautiful world!
+            Start your journey by one click, <br /> explore beautiful world!
           </h3>
+
           <p className="text-muted mb-4">
             In today’s digital era, the growing enthusiasm for travel and
             exploration has highlighted the need for intelligent systems that
@@ -112,17 +116,24 @@ const Dashboard = () => {
             platform that matches travelers based on destination, preferences,
             and timelines.
           </p>
+
           <div className="d-flex gap-3">
-            <Button variant="primary" className="rounded-pill px-4 py-2">
-              Plan now
+            <Button
+              as={Link}
+              to="/plannow"
+              variant="outline-dark"
+              className="rounded-pill px-4 py-2"
+            >
+              Plan Now
             </Button>
+
             <Button
               as={Link}
               to="/about"
               variant="outline-dark"
               className="rounded-pill px-4 py-2"
             >
-              About us
+              About Us
             </Button>
           </div>
         </div>
@@ -136,7 +147,7 @@ const Dashboard = () => {
             style={{ width: "350px", height: "350px", objectFit: "cover" }}
           />
 
-          {/* Floating cards */}
+          {/* Floating Cards */}
           <Card
             className="shadow position-absolute bg-white border-0"
             style={{

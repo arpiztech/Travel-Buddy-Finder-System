@@ -12,7 +12,8 @@ import Message from "./pages/Message";
 import Notifications from "./pages/Notifications";
 import Settings from "./pages/Settings";
 import Logout from "./pages/Logout";
-import About from "./pages/About"; // <-- Import About
+import About from "./pages/About";
+import PlanNow from "./pages/PlanNow";
 
 function App() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -54,6 +55,7 @@ function App() {
       <Route path="/profile" element={<Profile />} />
       {/* ✅ About Page */}
       <Route path="/about" element={<About />} />
+      <Route path="/plannow" element={<PlanNow />} />
 
       {/* Trips */}
       <Route path="/viewtrip" element={<ViewTrip />} />
