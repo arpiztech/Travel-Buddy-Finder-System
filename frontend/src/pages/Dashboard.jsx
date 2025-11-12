@@ -5,9 +5,9 @@ import { Link } from "react-router-dom";
 const Dashboard = () => {
   return (
     <div
-      className="d-flex position-fixed top-0 start-0 w-100"
+      className="d-flex"
       style={{
-        height: "100vh",
+        minHeight: "100vh",
         width: "100vw",
         margin: 0,
         padding: 0,
@@ -16,10 +16,11 @@ const Dashboard = () => {
     >
       {/* Sidebar */}
       <div
-        className="bg-primary text-white p-3 d-flex flex-column justify-content-between shadow"
+        className="bg-primary text-white d-flex flex-column justify-content-between shadow"
         style={{
           width: "250px",
-          height: "100%",
+          minHeight: "100vh",
+          padding: "24px 16px",
         }}
       >
         <div>
@@ -87,8 +88,11 @@ const Dashboard = () => {
           </Nav>
         </div>
 
+        {/* Logout button pinned to bottom */}
         <div>
-          <Nav.Link className="text-white fw-semibold">🚪 Logout</Nav.Link>
+          <Nav.Link as={Link} to="/logout" className="text-white fw-semibold">
+            🚪 Logout
+          </Nav.Link>
         </div>
       </div>
 
@@ -97,7 +101,7 @@ const Dashboard = () => {
         className="flex-grow-1 d-flex align-items-center justify-content-between p-5"
         style={{
           background: "linear-gradient(135deg, #b3e5fc 0%, #e1bee7 100%)",
-          height: "100%",
+          minHeight: "100vh",
           overflowY: "auto",
         }}
       >
@@ -107,7 +111,6 @@ const Dashboard = () => {
           <h3 className="fw-bold text-dark mb-3">
             Start your journey by one click, <br /> explore beautiful world!
           </h3>
-
           <p className="text-muted mb-4">
             In today’s digital era, the growing enthusiasm for travel and
             exploration has highlighted the need for intelligent systems that
@@ -116,7 +119,6 @@ const Dashboard = () => {
             platform that matches travelers based on destination, preferences,
             and timelines.
           </p>
-
           <div className="d-flex gap-3">
             <Button
               as={Link}
@@ -126,7 +128,6 @@ const Dashboard = () => {
             >
               Plan Now
             </Button>
-
             <Button
               as={Link}
               to="/about"
@@ -146,7 +147,6 @@ const Dashboard = () => {
             className="rounded-circle shadow"
             style={{ width: "350px", height: "350px", objectFit: "cover" }}
           />
-
           {/* Floating Cards */}
           <Card
             className="shadow position-absolute bg-white border-0"
@@ -171,7 +171,6 @@ const Dashboard = () => {
               </Card.Text>
             </Card.Body>
           </Card>
-
           <Card
             className="shadow position-absolute bg-white border-0"
             style={{

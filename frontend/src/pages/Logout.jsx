@@ -6,14 +6,14 @@ const Logout = ({ onLogout }) => {
   const navigate = useNavigate();
 
   const handleLogout = () => {
-    // Clear session
+    // Clear session/token data
     localStorage.removeItem("authToken");
     sessionStorage.clear();
 
-    // Update auth state in parent
+    // Update auth state in parent (set to false)
     if (onLogout) onLogout();
 
-    // Navigate to login page
+    // Redirect to login
     navigate("/", { replace: true });
   };
 
